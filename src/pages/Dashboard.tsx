@@ -73,20 +73,21 @@ function InfoTip({ text, align = 'left' }: { text: string; align?: 'left' | 'rig
 
 // ─── Widget header ────────────────────────────────────────────────────────────
 function WidgetHeader({
-  icon: Icon, title, tip, action,
+  icon: Icon, title, tip, action, color = C.accent,
 }: {
-  icon: typeof Zap; title: string; tip: string; action?: React.ReactNode;
+  icon: typeof Zap; title: string; tip: string; action?: React.ReactNode; color?: string;
 }) {
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
-      <h2 style={{ fontSize: 14, fontWeight: 700, color: C.text, margin: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+      <h2 style={{ fontSize: 14, fontWeight: 700, color: C.text, margin: 0, display: 'flex', alignItems: 'center', gap: 9 }}>
         <div style={{
-          width: 28, height: 28, borderRadius: 8,
-          background: '#F1F3F5', border: '1px solid #E8ECF0',
+          width: 30, height: 30, borderRadius: 9,
+          background: `${color}14`,
+          border: `1px solid ${color}28`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           flexShrink: 0,
         }}>
-          <Icon size={14} color="#6B7280" strokeWidth={1.8} />
+          <Icon size={14} color={color} strokeWidth={2} />
         </div>
         {title}
         <InfoTip text={tip} />
@@ -99,32 +100,34 @@ function WidgetHeader({
 // ─── Premium Stat Card ────────────────────────────────────────────────────────
 interface StatCardProps {
   label: string; value: string; sub?: string; trend?: number;
-  icon: typeof TrendingUp; tip: string;
+  icon: typeof TrendingUp; tip: string; accentColor?: string;
   isPositive?: (t: number) => boolean;
 }
-function StatCard({ label, value, sub, trend, icon: Icon, tip, isPositive }: StatCardProps) {
+function StatCard({ label, value, sub, trend, icon: Icon, tip, accentColor = C.accent, isPositive }: StatCardProps) {
   const pos = trend !== undefined ? (isPositive ? isPositive(trend) : trend >= 0) : true;
   return (
     <div className="card-lift" style={{
-      ...card, padding: '22px 22px 18px',
+      ...card, padding: '20px 20px 16px',
       position: 'relative', overflow: 'hidden',
+      borderTop: `3px solid ${accentColor}`,
     }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 14 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <span className="label-caps">{label}</span>
           <InfoTip text={tip} />
         </div>
         <div style={{
-          width: 34, height: 34, borderRadius: 10, flexShrink: 0,
-          background: '#F1F3F5', border: '1px solid #E8ECF0',
+          width: 32, height: 32, borderRadius: 9, flexShrink: 0,
+          background: `${accentColor}12`,
+          border: `1px solid ${accentColor}22`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
-          <Icon size={16} color="#6B7280" strokeWidth={1.8} />
+          <Icon size={15} color={accentColor} strokeWidth={2} />
         </div>
       </div>
 
       {/* Big metric number */}
-      <div style={{ fontSize: 32, fontWeight: 800, color: C.text, letterSpacing: -1, lineHeight: 1, marginBottom: 10 }}>
+      <div style={{ fontSize: 30, fontWeight: 800, color: C.text, letterSpacing: -0.8, lineHeight: 1, marginBottom: 10 }}>
         {value}
       </div>
 
@@ -174,23 +177,24 @@ function RecoItem({ icon: Icon, badge, badgeColor, badgeBg, title, body, onActio
 }) {
   return (
     <div style={{
-      display: 'flex', gap: 13, padding: '13px 14px',
-      background: C.c2, border: `1px solid ${C.border}`, borderRadius: 11,
-      alignItems: 'flex-start', transition: 'border-color .15s, box-shadow .15s',
+      display: 'flex', gap: 12, padding: '14px 16px',
+      background: '#FFFFFF', border: `1px solid ${C.border}`, borderRadius: 11,
+      alignItems: 'flex-start', boxShadow: S.card,
     }}>
       <div style={{
-        width: 36, height: 36, borderRadius: 10, background: '#F1F3F5', flexShrink: 0,
+        width: 36, height: 36, borderRadius: 10, flexShrink: 0,
+        background: `${badgeColor}12`,
+        border: `1px solid ${badgeColor}22`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        border: '1px solid #E8ECF0',
       }}>
-        <Icon size={16} color="#6B7280" />
+        <Icon size={16} color={badgeColor} strokeWidth={2} />
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 4, flexWrap: 'wrap' }}>
           <span style={{ fontWeight: 700, fontSize: 13, color: C.text }}>{title}</span>
           <span style={{
-            fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 99,
-            background: badgeBg, color: badgeColor, border: `1px solid ${badgeColor}22`,
+            fontSize: 9.5, fontWeight: 700, padding: '2px 7px', borderRadius: 99,
+            background: badgeBg, color: badgeColor, border: `1px solid ${badgeColor}28`,
             textTransform: 'uppercase', letterSpacing: 0.5, flexShrink: 0,
           }}>{badge}</span>
         </div>
@@ -200,7 +204,7 @@ function RecoItem({ icon: Icon, badge, badgeColor, badgeBg, title, body, onActio
         flexShrink: 0, padding: '6px 11px', borderRadius: 8,
         background: 'transparent', border: `1px solid ${C.border}`,
         color: C.accent, cursor: 'pointer', fontSize: 12, fontWeight: 700,
-        display: 'flex', alignItems: 'center', gap: 4,
+        display: 'flex', alignItems: 'center', gap: 4, whiteSpace: 'nowrap',
       }}>
         Zastosuj <ArrowRight size={10} />
       </button>
@@ -212,7 +216,7 @@ function RecoItem({ icon: Icon, badge, badgeColor, badgeBg, title, body, onActio
 function IcpPieTooltip({ active, payload }: { active?: boolean; payload?: Array<{ payload: { label: string; spend: number; conversions: number; priority: string } }> }) {
   if (!active || !payload?.length) return null;
   const d = payload[0].payload;
-  const pl = d.priority === 'P0' ? '🔴 P0 – priorytet Q1' : d.priority === 'P1' ? '🟠 P1' : d.priority === 'P2' ? '🟡 P2' : '⚪ poza ICP';
+  const pl = d.priority === 'P0' ? 'P0 – priorytet Q1' : d.priority === 'P1' ? 'P1' : d.priority === 'P2' ? 'P2' : 'poza ICP';
   return (
     <div style={{
       background: '#fff', border: `1px solid ${C.border}`, borderRadius: 11,
@@ -312,7 +316,7 @@ export default function Dashboard({ onPage }: Props) {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h1 style={{ fontSize: 28, fontWeight: 800, color: C.text, margin: 0, letterSpacing: -0.7 }}>
-            Dzień dobry, Wojtek 👋
+            Dzień dobry, Wojtek
           </h1>
           <p style={{ color: C.text3, fontSize: 13.5, margin: '5px 0 0', display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
             <span>{new Date().toLocaleDateString('pl-PL', { weekday: 'long', day: 'numeric', month: 'long' })}</span>
@@ -409,12 +413,12 @@ export default function Dashboard({ onPage }: Props) {
       {/* ── KPI stat cards ─────────────────────────────────── */}
       {isVisible('kpi') && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14, marginBottom: 24 }} className="grid-stat">
-          <StatCard label="Wydatki (30d)"        value={fmtPLN(s.totalCost)}            trend={+4.2}  sub="vs. poprzedni okres"                icon={DollarSign}        tip="Całkowite wydatki na reklamy w ciągu ostatnich 30 dni." />
-          <StatCard label="Przychód z konwersji" value={fmtPLN(s.totalConversionValue)} trend={+11.8} sub="wartość konwersji"                   icon={ShoppingCart}      tip="Łączna wartość konwersji przypisana do reklam (Google Ads tracking)." />
-          <StatCard label="Średni ROAS"          value={`${s.avgRoas.toFixed(2)}x`}     trend={+7.1}  sub="przychód / koszt"                   icon={TrendingUp}        tip="Return on Ad Spend — ile PLN przychodu generuje 1 PLN wydany na reklamy. Cel: ≥3.0x dla ICP." />
-          <StatCard label="Kliknięcia"           value={fmt(s.totalClicks)}             trend={+3.5}  sub={`CTR: ${fmtPct(s.avgCtr)}`}         icon={MousePointerClick} tip="Łączna liczba kliknięć w reklamy. CTR = % osób, które kliknęły po zobaczeniu reklamy." />
-          <StatCard label="Wyświetlenia"         value={fmt(s.totalImpressions)}        trend={-1.2}  sub="impressions"                        icon={Eye}               tip="Liczba wyświetleń reklam. Wysoka liczba przy niskim CTR = zły dobór słów kluczowych." isPositive={t => t >= 0} />
-          <StatCard label="Konwersje"            value={fmt(s.totalConversions)}        trend={+14.0} sub={`avg CPC: ${s.avgCpc.toFixed(2)} PLN`} icon={Activity}        tip="Liczba pożądanych akcji (rejestracje, zakupy). CPC = średni koszt za kliknięcie." />
+          <StatCard label="Wydatki (30d)"        value={fmtPLN(s.totalCost)}            trend={+4.2}  sub="vs. poprzedni okres"                icon={DollarSign}        accentColor={C.accent}       tip="Całkowite wydatki na reklamy w ciągu ostatnich 30 dni." />
+          <StatCard label="Przychód z konwersji" value={fmtPLN(s.totalConversionValue)} trend={+11.8} sub="wartość konwersji"                  icon={ShoppingCart}      accentColor={C.green}        tip="Łączna wartość konwersji przypisana do reklam (Google Ads tracking)." />
+          <StatCard label="Średni ROAS"          value={`${s.avgRoas.toFixed(2)}x`}     trend={+7.1}  sub="przychód / koszt"                  icon={TrendingUp}        accentColor="#8B5CF6"        tip="Return on Ad Spend — ile PLN przychodu generuje 1 PLN wydany na reklamy. Cel: ≥3.0x dla ICP." />
+          <StatCard label="Kliknięcia"           value={fmt(s.totalClicks)}             trend={+3.5}  sub={`CTR: ${fmtPct(s.avgCtr)}`}        icon={MousePointerClick} accentColor={C.navyLight}    tip="Łączna liczba kliknięć w reklamy. CTR = % osób, które kliknęły po zobaczeniu reklamy." />
+          <StatCard label="Wyświetlenia"         value={fmt(s.totalImpressions)}        trend={-1.2}  sub="impressions"                       icon={Eye}               accentColor={C.teal}         tip="Liczba wyświetleń reklam. Wysoka liczba przy niskim CTR = zły dobór słów kluczowych." isPositive={t => t >= 0} />
+          <StatCard label="Konwersje"            value={fmt(s.totalConversions)}        trend={+14.0} sub={`avg CPC: ${s.avgCpc.toFixed(2)} PLN`} icon={Activity}       accentColor={C.orange}       tip="Liczba pożądanych akcji (rejestracje, zakupy). CPC = średni koszt za kliknięcie." />
         </div>
       )}
 
@@ -430,6 +434,7 @@ export default function Dashboard({ onPage }: Props) {
               <WidgetHeader
                 icon={AlertTriangle}
                 title="Priorytety na dziś"
+                color="#EF4444"
                 tip="Kampanie wymagające pilnej uwagi — na podstawie zmęczenia kreacji, trendów CTR i ICP Fit Score."
                 action={
                   <span style={{
@@ -487,6 +492,7 @@ export default function Dashboard({ onPage }: Props) {
               <WidgetHeader
                 icon={Target}
                 title="Podział budżetu wg segmentu ICP"
+                color={C.navyLight}
                 tip={`ICP (Ideal Customer Profile) wg dokumentu „ICP Source of Truth". P0: Gastronomia & Food Service. P1: Hospitality, Retail. Cel: ≥70% budżetu na P0+P1.`}
                 action={
                   <div style={{ display: 'flex', gap: 6 }}>
@@ -565,6 +571,7 @@ export default function Dashboard({ onPage }: Props) {
               <WidgetHeader
                 icon={Lightbulb}
                 title="Rekomendacje AI"
+                color="#8B5CF6"
                 tip="Automatyczne rekomendacje optymalizacyjne na podstawie zmęczenia kreacji, trendów CTR i dopasowania do ICP."
                 action={
                   <button onClick={() => onPage('insights')} className="btn-secondary" style={{
@@ -674,16 +681,16 @@ export default function Dashboard({ onPage }: Props) {
               </div>
               <div style={{ marginTop: 10, display: 'flex', gap: 5 }}>
                 {[
-                  { label: 'High ICP', count: MOCK_CAMPAIGNS.filter(c => c.icpStatus === 'high').length,    color: C.rose,   emoji: '🔴' },
-                  { label: 'Core ICP', count: MOCK_CAMPAIGNS.filter(c => c.icpStatus === 'core').length,    color: C.orange, emoji: '🟠' },
-                  { label: 'Poza ICP', count: MOCK_CAMPAIGNS.filter(c => c.icpStatus === 'outside').length, color: C.text3,  emoji: '⚪' },
+                  { label: 'High ICP', count: MOCK_CAMPAIGNS.filter(c => c.icpStatus === 'high').length,    color: C.rose   },
+                  { label: 'Core ICP', count: MOCK_CAMPAIGNS.filter(c => c.icpStatus === 'core').length,    color: C.orange },
+                  { label: 'Poza ICP', count: MOCK_CAMPAIGNS.filter(c => c.icpStatus === 'outside').length, color: C.text3  },
                 ].map(item => (
                   <div key={item.label} style={{
-                    flex: 1, textAlign: 'center', padding: '7px 4px',
+                    flex: 1, textAlign: 'center', padding: '8px 4px',
                     borderRadius: 8, background: C.c2, border: `1px solid ${C.border}`,
                   }}>
-                    <div style={{ fontSize: 15, fontWeight: 800, color: item.color }}>{item.count}</div>
-                    <div style={{ fontSize: 9, color: C.text3, marginTop: 1 }}>{item.emoji} {item.label}</div>
+                    <div style={{ fontSize: 16, fontWeight: 800, color: item.color }}>{item.count}</div>
+                    <div style={{ fontSize: 9.5, color: C.text3, marginTop: 2, fontWeight: 600 }}>{item.label}</div>
                   </div>
                 ))}
               </div>

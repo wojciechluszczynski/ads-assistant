@@ -1,68 +1,68 @@
-// AdsAI Design System — Dark Navy theme, Kadromierz orange brand
-// Consistent with the dark login screen
+// AdsAI Design System — Light content area, Kadromierz orange brand
+// Sidebar is independently dark (hardcoded in Sidebar.tsx)
 
 export const C = {
   // ── Page & surface backgrounds ────────────────────────────
-  bg:   '#0B1120',   // Deepest page bg
-  c1:   '#1E293B',   // Card / panel surface
-  c2:   '#162032',   // Inset card, table stripe, slightly darker
-  c3:   '#243044',   // Hover bg, chip bg
-  c4:   '#2D3A4E',   // Disabled, muted, stronger contrast
+  bg:   '#F4F6F9',   // Cool light page bg
+  c1:   '#FFFFFF',   // Card surface
+  c2:   '#F8FAFC',   // Inset / stripe
+  c3:   '#F1F5F9',   // Hover bg
+  c4:   '#E2E8F0',   // Disabled / muted
 
   // ── Primary brand: Kadromierz orange ──────────────────────
   accent:    '#F97316',
   accent2:   '#EA580C',
-  accentBg:  'rgba(249,115,22,0.12)',
-  accentBg2: 'rgba(249,115,22,0.20)',
-  orangeBdr: 'rgba(249,115,22,0.30)',
-  glow:      'rgba(249,115,22,0.28)',
+  accentBg:  'rgba(249,115,22,0.08)',
+  accentBg2: 'rgba(249,115,22,0.15)',
+  orangeBdr: 'rgba(249,115,22,0.28)',
+  glow:      'rgba(249,115,22,0.22)',
 
   // ── Borders ───────────────────────────────────────────────
-  border:    'rgba(255,255,255,0.07)',
-  borderMd:  'rgba(255,255,255,0.12)',
-  borderLg:  'rgba(255,255,255,0.20)',
+  border:    '#E8ECF0',
+  borderMd:  '#D1D5DB',
+  borderLg:  '#9CA3AF',
 
   // ── Text ──────────────────────────────────────────────────
-  text:      '#F1F5F9',   // Near white
-  text2:     '#CBD5E1',   // Body
-  text3:     '#64748B',   // Secondary / labels
-  text4:     '#334155',   // Placeholder / very muted
+  text:      '#0F172A',
+  text2:     '#374151',
+  text3:     '#6B7280',
+  text4:     '#9CA3AF',
 
   // ── Semantic: positive ────────────────────────────────────
-  green:     '#34D399',
-  greenBg:   'rgba(52,211,153,0.10)',
-  greenBdr:  'rgba(52,211,153,0.25)',
+  green:     '#059669',
+  greenBg:   'rgba(5,150,105,0.08)',
+  greenBdr:  'rgba(5,150,105,0.22)',
 
   // ── Amber / warning ───────────────────────────────────────
-  orange:    '#FBBF24',
-  orangeBg:  'rgba(251,191,36,0.10)',
+  orange:    '#D97706',
+  orangeBg:  'rgba(217,119,6,0.08)',
 
   // ── Red / critical ────────────────────────────────────────
-  rose:      '#F87171',
-  roseBg:    'rgba(248,113,113,0.10)',
-  roseBdr:   'rgba(248,113,113,0.25)',
+  rose:      '#DC2626',
+  roseBg:    'rgba(220,38,38,0.07)',
+  roseBdr:   'rgba(220,38,38,0.20)',
 
   // ── Teal / violet ─────────────────────────────────────────
-  teal:      '#2DD4BF',
-  tealBg:    'rgba(45,212,191,0.10)',
-  violet:    '#A78BFA',
-  violetBg:  'rgba(167,139,250,0.10)',
+  teal:      '#0D9488',
+  tealBg:    'rgba(13,148,136,0.08)',
+  violet:    '#7C3AED',
+  violetBg:  'rgba(124,58,237,0.08)',
 
-  // ── Navy accent (blue) ────────────────────────────────────
-  navy:      '#60A5FA',
-  navy2:     '#3B82F6',
-  navyLight: '#93C5FD',
-  navyBg:    'rgba(96,165,250,0.10)',
+  // ── Blue / navy ───────────────────────────────────────────
+  navy:      '#1E40AF',
+  navy2:     '#1D4ED8',
+  navyLight: '#3B82F6',
+  navyBg:    'rgba(30,64,175,0.07)',
 } as const;
 
 // ─── Gradient icon backgrounds ───────────────────────────────────────────────
 export const G = {
   orange: 'linear-gradient(135deg,#F97316 0%,#EA580C 100%)',
-  navy:   'linear-gradient(135deg,#60A5FA 0%,#3B82F6 100%)',
+  navy:   'linear-gradient(135deg,#3B82F6 0%,#1E40AF 100%)',
   amber:  'linear-gradient(135deg,#FBBF24 0%,#D97706 100%)',
   sky:    'linear-gradient(135deg,#38BDF8 0%,#0284C7 100%)',
   slate:  'linear-gradient(135deg,#94A3B8 0%,#64748B 100%)',
-  rose:   'linear-gradient(135deg,#F87171 0%,#EF4444 100%)',
+  rose:   'linear-gradient(135deg,#F87171 0%,#DC2626 100%)',
   teal:   'linear-gradient(135deg,#2DD4BF 0%,#0D9488 100%)',
   green:  'linear-gradient(135deg,#34D399 0%,#059669 100%)',
   violet: 'linear-gradient(135deg,#A78BFA 0%,#7C3AED 100%)',
@@ -70,28 +70,28 @@ export const G = {
 
 // ─── Shadow tokens ────────────────────────────────────────────────────────────
 export const S = {
-  card:      '0 1px 3px rgba(0,0,0,0.25), 0 1px 2px rgba(0,0,0,0.20)',
-  cardHover: '0 4px 20px rgba(0,0,0,0.35), 0 1px 4px rgba(0,0,0,0.25)',
-  orange:    '0 4px 16px rgba(249,115,22,0.32)',
-  orangeHov: '0 6px 24px rgba(249,115,22,0.44)',
-  navy:      '0 4px 14px rgba(96,165,250,0.18)',
-  nav:       '0 1px 0 rgba(0,0,0,0.30)',
-  toast:     '0 8px 32px rgba(0,0,0,0.50), 0 2px 6px rgba(0,0,0,0.35)',
-  dropdown:  '0 8px 40px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.35)',
+  card:      '0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.04)',
+  cardHover: '0 4px 16px rgba(0,0,0,0.09), 0 1px 3px rgba(0,0,0,0.06)',
+  orange:    '0 4px 16px rgba(249,115,22,0.28)',
+  orangeHov: '0 6px 24px rgba(249,115,22,0.38)',
+  navy:      '0 4px 14px rgba(30,64,175,0.18)',
+  nav:       '0 1px 0 rgba(0,0,0,0.06)',
+  toast:     '0 8px 32px rgba(0,0,0,0.14), 0 2px 6px rgba(0,0,0,0.08)',
+  dropdown:  '0 8px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.07)',
 } as const;
 
-// ─── Standard card — dark theme ───────────────────────────────────────────────
+// ─── Standard card ────────────────────────────────────────────────────────────
 export const card = {
-  background: '#1E293B',
-  border: '1px solid rgba(255,255,255,0.07)',
-  borderRadius: 10,
-  boxShadow: '0 1px 3px rgba(0,0,0,0.25)',
+  background: '#FFFFFF',
+  border: '1px solid #E8ECF0',
+  borderRadius: 12,
+  boxShadow: '0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.04)',
 } as const;
 
 // ─── Section card ─────────────────────────────────────────────────────────────
 export const sectionCard = {
-  background: '#1E293B',
-  border: '1px solid rgba(255,255,255,0.07)',
-  borderRadius: 12,
-  boxShadow: '0 1px 3px rgba(0,0,0,0.20), 0 4px 12px rgba(0,0,0,0.20)',
+  background: '#FFFFFF',
+  border: '1px solid #E8ECF0',
+  borderRadius: 14,
+  boxShadow: '0 1px 3px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.04)',
 } as const;

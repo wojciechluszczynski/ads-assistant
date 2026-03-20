@@ -18,7 +18,7 @@ export default function App() {
   if (!authed) return <Login onLogin={() => setAuthed(true)} />;
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#0B1120' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#F4F6F9' }}>
       <Sidebar
         page={page}
         onPage={setPage}
@@ -27,7 +27,7 @@ export default function App() {
         onAccount={setActiveAccount}
         demoMode={true}
       />
-      <main className="main-content" style={{ flex: 1, minWidth: 0, overflowY: 'auto', background: '#0B1120' }}>
+      <main className="main-content" style={{ flex: 1, minWidth: 0, overflowY: 'auto', background: '#F4F6F9' }}>
         {page === 'dashboard' && <Dashboard onPage={setPage} />}
         {page === 'campaigns' && <Campaigns />}
         {page === 'reports'   && <Reports />}
