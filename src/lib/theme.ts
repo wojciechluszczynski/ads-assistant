@@ -1,48 +1,69 @@
+// Kadromierz Design System — adapted for AdsAI
+// Primary: Orange #F97316 | Navy: #0B4A6F | BG: #F8FAFC
+
 export const C = {
   // Backgrounds
-  bg:       '#060C18',
-  c1:       '#0A1428',
-  c2:       '#0F1C38',
-  // Accent
-  accent:   '#1C69D4',
-  accent2:  '#3D8EF0',
-  glow:     'rgba(28,105,212,0.40)',
-  blue:     '#0653B1',
+  bg:       '#F8FAFC',
+  c1:       '#FFFFFF',
+  c2:       '#F1F5F9',
+
+  // Primary orange (CTA, accents, active, icons)
+  accent:   '#F97316',
+  accent2:  '#EA580C',   // hover / darker orange
+  glow:     'rgba(249,115,22,0.18)',
+
+  // Navy (headings, supplementary icons, borders)
+  navy:     '#0B4A6F',
+  navyLight:'#0EA5E9',
+
   // Surfaces
-  surface:  'rgba(255,255,255,0.055)',
-  subtle:   'rgba(255,255,255,0.09)',
-  hi:       'rgba(255,255,255,0.14)',
+  surface:  'rgba(249,115,22,0.04)',
+  subtle:   '#F8FAFC',
+  hi:       '#F1F5F9',
+
   // Borders
-  border:   'rgba(255,255,255,0.09)',
-  borderHi: 'rgba(255,255,255,0.18)',
+  border:   '#E2E8F0',
+  borderHi: '#CBD5E1',
+
   // Text
-  text:     '#FFFFFF',
-  text2:    'rgba(255,255,255,0.65)',
-  text3:    'rgba(255,255,255,0.38)',
-  // Status
-  green:    '#26de81',
-  greenBg:  'rgba(38,222,129,0.12)',
-  orange:   '#FF9F43',
-  orangeBg: 'rgba(255,159,67,0.12)',
-  rose:     '#FF4757',
-  roseBg:   'rgba(255,71,87,0.12)',
-  yellow:   '#FFC107',
-  yellowBg: 'rgba(255,193,7,0.12)',
-  purple:   '#A78BFA',
-  purpleBg: 'rgba(167,139,250,0.12)',
+  text:     '#1E293B',
+  text2:    '#64748B',
+  text3:    '#94A3B8',
+
+  // Status — green FORBIDDEN per DS, replaced by orange
+  green:    '#F97316',         // positive indicators → orange
+  greenBg:  'rgba(249,115,22,0.08)',
+
+  // Amber — warnings, paused states
+  orange:   '#F59E0B',
+  orangeBg: 'rgba(245,158,11,0.10)',
+
+  // Red — errors, low ROAS, negative trend
+  rose:     '#EF4444',
+  roseBg:   'rgba(239,68,68,0.08)',
+
+  yellow:   '#F59E0B',
+  yellowBg: 'rgba(245,158,11,0.10)',
+
+  // Purple FORBIDDEN per DS — neutralised to slate
+  purple:   '#94A3B8',
+  purpleBg: 'rgba(148,163,184,0.10)',
 } as const;
 
+// White glassmorphism (DS section 6)
 export const glass = {
-  background: C.surface,
-  backdropFilter: 'blur(32px) saturate(200%)',
-  WebkitBackdropFilter: 'blur(32px) saturate(200%)',
-  border: `1px solid ${C.border}`,
-  borderRadius: 18,
-  boxShadow: `inset 0 1px 0 rgba(255,255,255,0.10), 0 8px 32px rgba(0,0,0,0.24)`,
+  background: 'rgba(255,255,255,0.80)',
+  backdropFilter: 'blur(16px)',
+  WebkitBackdropFilter: 'blur(16px)',
+  border: '1px solid rgba(255,255,255,0.30)',
+  borderRadius: 16,
+  boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
 } as const;
 
+// Standard card (DS 5.3)
 export const card = {
-  background: C.subtle,
-  border: `1px solid ${C.border}`,
+  background: '#FFFFFF',
+  border: '1px solid #E2E8F0',
   borderRadius: 16,
+  boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
 } as const;

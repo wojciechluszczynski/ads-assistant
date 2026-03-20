@@ -109,7 +109,7 @@ const SETUP_STEPS = [
     title: 'Dodaj zmienne w Netlify',
     steps: [
       'Netlify → Site Configuration → Environment Variables',
-      'Dodaj wszystkie klucze z tabeli powyżej',
+      'Dodaj wszystkie klucze z tabeli poniżej',
       'Kliknij "Trigger deploy" — aplikacja połączy się z prawdziwymi danymi',
     ],
     url: 'https://app.netlify.com',
@@ -129,22 +129,23 @@ export default function Settings() {
   return (
     <div style={{ padding: '24px 20px', maxWidth: 900, margin: '0 auto' }}>
       <div style={{ marginBottom: 28 }}>
-        <h1 style={{ fontFamily: 'Rajdhani, sans-serif', fontSize: 28, fontWeight: 700, color: C.text, margin: 0 }}>Ustawienia</h1>
+        <h1 style={{ fontSize: 24, fontWeight: 800, color: C.text, margin: 0, fontFamily: 'Inter, sans-serif' }}>Ustawienia</h1>
         <p style={{ color: C.text3, fontSize: 13, margin: '4px 0 0' }}>Konfiguracja połączeń z Google Ads API i Claude</p>
       </div>
 
       {/* Demo mode banner */}
       <div style={{
         ...card, marginBottom: 24,
-        padding: '16px 18px',
+        padding: '14px 18px',
         background: C.orangeBg,
-        border: `1px solid ${C.orange}44`,
+        border: `1px solid rgba(245,158,11,0.30)`,
         display: 'flex', alignItems: 'center', gap: 12,
+        borderRadius: 12,
       }}>
         <AlertCircle size={18} color={C.orange} />
         <div>
-          <div style={{ fontWeight: 700, fontSize: 13, color: C.orange }}>Tryb DEMO aktywny</div>
-          <div style={{ fontSize: 12, color: C.text2 }}>
+          <div style={{ fontWeight: 700, fontSize: 13, color: '#92400E' }}>Tryb DEMO aktywny</div>
+          <div style={{ fontSize: 12, color: '#78350F' }}>
             Aplikacja działa na mock danych. Aby połączyć z prawdziwym kontem Google Ads, dodaj zmienne środowiskowe w Netlify.
           </div>
         </div>
@@ -153,8 +154,8 @@ export default function Settings() {
       {/* Setup guide */}
       <div style={{ ...card, marginBottom: 24, padding: '20px 22px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 18 }}>
-          <Zap size={18} color={C.accent2} />
-          <h2 style={{ fontFamily: 'Rajdhani, sans-serif', fontSize: 18, fontWeight: 700, color: C.text, margin: 0 }}>
+          <Zap size={18} color={C.accent} />
+          <h2 style={{ fontSize: 17, fontWeight: 700, color: C.text, margin: 0, fontFamily: 'Inter, sans-serif' }}>
             Przewodnik konfiguracji (5 kroków)
           </h2>
         </div>
@@ -163,16 +164,18 @@ export default function Settings() {
             <div key={step.num} style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
               <div style={{
                 width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
-                background: `linear-gradient(135deg, ${C.accent}, ${C.blue})`,
+                background: C.accent,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontFamily: 'Rajdhani, sans-serif', fontWeight: 700, fontSize: 13, color: '#fff',
+                fontWeight: 800, fontSize: 12, color: '#fff',
+                boxShadow: `0 2px 6px ${C.glow}`,
               }}>{step.num}</div>
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 700, fontSize: 14, color: C.text, marginBottom: 6, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   {step.title}
                   {step.url && (
                     <a href={step.url} target="_blank" rel="noreferrer" style={{
-                      fontSize: 11, color: C.accent2, display: 'flex', alignItems: 'center', gap: 3,
+                      fontSize: 11, color: C.accent, display: 'flex', alignItems: 'center', gap: 3,
+                      fontWeight: 600,
                     }}>
                       Otwórz <ExternalLink size={11} />
                     </a>
@@ -192,37 +195,41 @@ export default function Settings() {
       {/* Env vars table */}
       <div style={{ ...card, padding: '20px 22px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 18 }}>
-          <Key size={18} color={C.accent2} />
-          <h2 style={{ fontFamily: 'Rajdhani, sans-serif', fontSize: 18, fontWeight: 700, color: C.text, margin: 0 }}>
+          <Key size={18} color={C.navy} />
+          <h2 style={{ fontSize: 17, fontWeight: 700, color: C.text, margin: 0, fontFamily: 'Inter, sans-serif' }}>
             Zmienne środowiskowe (Netlify)
           </h2>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {SETTINGS.map(s => (
-            <div key={s.key} style={{ padding: '14px 16px', borderRadius: 10, background: C.subtle, border: `1px solid ${C.border}` }}>
+            <div key={s.key} style={{
+              padding: '14px 16px', borderRadius: 10,
+              background: C.subtle, border: `1px solid ${C.border}`,
+            }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <code style={{ fontSize: 12, fontWeight: 700, color: C.accent2, fontFamily: 'monospace' }}>{s.key}</code>
+                  <code style={{ fontSize: 12, fontWeight: 700, color: C.accent, fontFamily: 'monospace' }}>{s.key}</code>
                   {s.isSecret && <Shield size={12} color={C.text3} />}
                 </div>
-                <div style={{ display: 'flex', gap: 6 }}>
+                <div style={{ display: 'flex', gap: 8 }}>
                   {s.docUrl && (
                     <a href={s.docUrl} target="_blank" rel="noreferrer" style={{
-                      fontSize: 11, color: C.accent2, display: 'flex', alignItems: 'center', gap: 3,
+                      fontSize: 11, color: C.navyLight, display: 'flex', alignItems: 'center', gap: 3, fontWeight: 600,
                     }}>
                       Docs <ExternalLink size={10} />
                     </a>
                   )}
                   <button onClick={() => copyKey(s.key)} style={{
-                    background: 'none', border: 'none', color: copied === s.key ? C.green : C.text3,
-                    cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 3, fontSize: 11,
+                    background: 'none', border: 'none',
+                    color: copied === s.key ? C.accent : C.text3,
+                    cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 3, fontSize: 11, fontWeight: 600,
                   }}>
                     {copied === s.key ? <CheckCircle size={12} /> : <Copy size={12} />}
                     {copied === s.key ? 'Skopiowano' : 'Kopiuj'}
                   </button>
                 </div>
               </div>
-              <div style={{ fontSize: 12, color: C.text2, marginBottom: 8 }}>{s.description}</div>
+              <div style={{ fontSize: 12, color: C.text2, marginBottom: 6 }}>{s.description}</div>
               <code style={{ fontSize: 11, color: C.text3, fontFamily: 'monospace' }}>{s.placeholder}</code>
             </div>
           ))}

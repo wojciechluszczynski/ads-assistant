@@ -29,29 +29,31 @@ export default function TopNav({ page, onPage, accounts, activeAccount, onAccoun
     <nav style={{
       position: 'sticky', top: 0, zIndex: 100,
       height: 58, display: 'flex', alignItems: 'center',
-      padding: '0 20px', gap: 4,
-      background: 'rgba(8,14,28,0.88)',
-      backdropFilter: 'blur(32px) saturate(200%)',
+      padding: '0 24px', gap: 4,
+      background: 'rgba(255,255,255,0.90)',
+      backdropFilter: 'blur(16px)',
+      WebkitBackdropFilter: 'blur(16px)',
       borderBottom: `1px solid ${C.border}`,
+      boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
     }}>
-      {/* Logo */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginRight: 20 }}>
+      {/* Logo mark */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginRight: 20 }}>
         <div style={{
           width: 32, height: 32, borderRadius: 8,
-          background: `linear-gradient(135deg, ${C.accent}, ${C.blue})`,
+          background: `linear-gradient(135deg, ${C.accent}, ${C.accent2})`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: `0 0 12px ${C.glow}`,
+          boxShadow: `0 2px 8px ${C.glow}`,
         }}>
-          <Zap size={18} color="#fff" />
+          <Zap size={17} color="#fff" />
         </div>
-        <span style={{ fontFamily: 'Rajdhani, sans-serif', fontWeight: 700, fontSize: 18, color: C.text, letterSpacing: 1 }}>
+        <span style={{ fontWeight: 800, fontSize: 16, color: C.text, letterSpacing: -0.3, fontFamily: 'Inter, sans-serif' }}>
           AdsAI
         </span>
         {demoMode && (
           <span style={{
-            fontSize: 10, fontWeight: 700, letterSpacing: 1,
+            fontSize: 10, fontWeight: 700, letterSpacing: 0.5,
             background: C.orangeBg, color: C.orange,
-            border: `1px solid ${C.orange}44`,
+            border: `1px solid rgba(245,158,11,0.30)`,
             borderRadius: 99, padding: '2px 7px',
           }}>DEMO</span>
         )}
@@ -65,14 +67,15 @@ export default function TopNav({ page, onPage, accounts, activeAccount, onAccoun
           return (
             <button key={item.id} onClick={() => onPage(item.id)} style={{
               display: 'flex', alignItems: 'center', gap: 6,
-              padding: '7px 13px', borderRadius: 8, border: '1px solid transparent',
-              background: active ? `rgba(28,105,212,0.15)` : 'transparent',
-              borderColor: active ? 'rgba(28,105,212,0.22)' : 'transparent',
-              color: active ? C.accent2 : C.text2,
-              fontFamily: 'Rajdhani, sans-serif', fontSize: 13, fontWeight: 700,
-              letterSpacing: 0.5, cursor: 'pointer', transition: 'all .15s',
+              padding: '7px 13px', borderRadius: 0, border: 'none',
+              borderBottom: active ? `2px solid ${C.accent}` : '2px solid transparent',
+              background: 'transparent',
+              color: active ? C.accent : C.text2,
+              fontSize: 13, fontWeight: active ? 600 : 500,
+              cursor: 'pointer', transition: 'all .15s',
+              height: 58, marginBottom: active ? '-1px' : 0,
             }}>
-              <Icon size={15} />
+              <Icon size={15} color={active ? C.accent : C.text3} />
               <span>{item.label}</span>
             </button>
           );
@@ -84,16 +87,17 @@ export default function TopNav({ page, onPage, accounts, activeAccount, onAccoun
         <button onClick={() => setAccountOpen(v => !v)} style={{
           display: 'flex', alignItems: 'center', gap: 8,
           padding: '6px 12px', borderRadius: 8,
-          background: C.subtle, border: `1px solid ${C.border}`,
+          background: C.c2, border: `1px solid ${C.border}`,
           color: C.text, cursor: 'pointer', fontSize: 13,
+          fontWeight: 500,
         }}>
           <div style={{
             width: 22, height: 22, borderRadius: '50%',
-            background: `linear-gradient(135deg,${C.accent},${C.blue})`,
+            background: `linear-gradient(135deg, ${C.accent}, ${C.accent2})`,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: 10, fontWeight: 700, color: '#fff',
           }}>
-            {activeAccount.name.slice(0,1)}
+            {activeAccount.name.slice(0, 1)}
           </div>
           <span style={{ maxWidth: 140, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {activeAccount.name}
@@ -101,17 +105,17 @@ export default function TopNav({ page, onPage, accounts, activeAccount, onAccoun
         </button>
         {accountOpen && (
           <div style={{
-            position: 'absolute', right: 0, top: '110%', minWidth: 200,
+            position: 'absolute', right: 0, top: '110%', minWidth: 210,
             background: C.c1, border: `1px solid ${C.border}`,
-            borderRadius: 10, overflow: 'hidden', zIndex: 200,
-            boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+            borderRadius: 12, overflow: 'hidden', zIndex: 200,
+            boxShadow: '0 8px 24px rgba(0,0,0,0.10)',
           }}>
             {accounts.map(acc => (
               <button key={acc.id} onClick={() => { onAccount(acc); setAccountOpen(false); }} style={{
                 width: '100%', textAlign: 'left', padding: '10px 14px',
                 background: acc.id === activeAccount.id ? C.subtle : 'transparent',
                 border: 'none', color: C.text, cursor: 'pointer', fontSize: 13,
-                display: 'block',
+                display: 'block', transition: 'background .12s',
               }}>
                 <div style={{ fontWeight: 600 }}>{acc.name}</div>
                 <div style={{ color: C.text3, fontSize: 11 }}>{acc.customerId}</div>
@@ -123,7 +127,7 @@ export default function TopNav({ page, onPage, accounts, activeAccount, onAccoun
 
       {/* Mobile hamburger */}
       <button onClick={() => setMenuOpen(v => !v)} className="nav-mobile" style={{
-        background: 'none', border: 'none', color: C.text, cursor: 'pointer', marginLeft: 8,
+        background: 'none', border: 'none', color: C.text2, cursor: 'pointer', marginLeft: 8,
       }}>
         {menuOpen ? <X size={22} /> : <Menu size={22} />}
       </button>
@@ -134,6 +138,7 @@ export default function TopNav({ page, onPage, accounts, activeAccount, onAccoun
           position: 'fixed', top: 58, left: 0, right: 0, bottom: 0,
           background: C.c1, zIndex: 99, padding: 16,
           display: 'flex', flexDirection: 'column', gap: 4,
+          borderTop: `1px solid ${C.border}`,
         }} className="nav-mobile">
           {NAV_ITEMS.map(item => {
             const active = page === item.id;
@@ -142,12 +147,12 @@ export default function TopNav({ page, onPage, accounts, activeAccount, onAccoun
               <button key={item.id} onClick={() => { onPage(item.id); setMenuOpen(false); }} style={{
                 display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px',
                 borderRadius: 10, border: 'none',
-                background: active ? `rgba(28,105,212,0.15)` : 'transparent',
-                color: active ? C.accent2 : C.text,
-                fontFamily: 'Rajdhani, sans-serif', fontSize: 15, fontWeight: 700,
+                background: active ? `rgba(249,115,22,0.08)` : 'transparent',
+                color: active ? C.accent : C.text,
+                fontSize: 15, fontWeight: active ? 600 : 500,
                 cursor: 'pointer', textAlign: 'left',
               }}>
-                <Icon size={18} />
+                <Icon size={18} color={active ? C.accent : C.text3} />
                 {item.label}
               </button>
             );

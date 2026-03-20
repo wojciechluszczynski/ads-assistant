@@ -14,9 +14,9 @@ const SUGGESTED = [
 
 function RiskBadge({ level }: { level: ChangePreview['riskLevel'] }) {
   const cfg = {
-    low:    { color: C.green,  bg: C.greenBg,  label: 'Niskie ryzyko' },
-    medium: { color: C.orange, bg: C.orangeBg, label: 'Średnie ryzyko' },
-    high:   { color: C.rose,   bg: C.roseBg,   label: 'Wysokie ryzyko' },
+    low:    { color: C.accent,  bg: C.greenBg,   label: 'Niskie ryzyko'  },
+    medium: { color: C.orange,  bg: C.orangeBg,  label: 'Srednie ryzyko' },
+    high:   { color: C.rose,    bg: C.roseBg,    label: 'Wysokie ryzyko' },
   }[level];
   return (
     <span style={{
@@ -34,12 +34,12 @@ function ChangePreviewCard({ preview, onConfirm, onReject }: {
   return (
     <div style={{
       ...card, marginTop: 10, padding: '14px 16px',
-      border: `1px solid ${C.orange}44`,
-      background: `rgba(255,159,67,0.06)`,
+      border: `1px solid rgba(249,115,22,0.30)`,
+      background: `rgba(249,115,22,0.04)`,
     }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-          <AlertTriangle size={15} color={C.orange} />
+          <AlertTriangle size={15} color={C.accent} />
           <span style={{ fontWeight: 700, fontSize: 13, color: C.text }}>Podgląd zmiany</span>
         </div>
         <RiskBadge level={preview.riskLevel} />
@@ -48,13 +48,13 @@ function ChangePreviewCard({ preview, onConfirm, onReject }: {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
         {Object.keys(preview.before).map(key => (
           <div key={key} style={{ display: 'flex', gap: 8 }}>
-            <div style={{ flex: 1, background: C.roseBg, borderRadius: 7, padding: '8px 10px' }}>
+            <div style={{ flex: 1, background: C.roseBg, borderRadius: 8, padding: '8px 10px' }}>
               <div style={{ fontSize: 10, color: C.text3, marginBottom: 3, textTransform: 'uppercase', letterSpacing: 0.5 }}>PRZED</div>
               <div style={{ fontSize: 12, fontWeight: 700, color: C.rose }}>{String(preview.before[key])}</div>
             </div>
-            <div style={{ flex: 1, background: C.greenBg, borderRadius: 7, padding: '8px 10px' }}>
+            <div style={{ flex: 1, background: C.greenBg, borderRadius: 8, padding: '8px 10px' }}>
               <div style={{ fontSize: 10, color: C.text3, marginBottom: 3, textTransform: 'uppercase', letterSpacing: 0.5 }}>PO</div>
-              <div style={{ fontSize: 12, fontWeight: 700, color: C.green }}>{String(preview.after[key])}</div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: C.accent }}>{String(preview.after[key])}</div>
             </div>
           </div>
         ))}
@@ -62,18 +62,18 @@ function ChangePreviewCard({ preview, onConfirm, onReject }: {
       <div style={{ display: 'flex', gap: 8 }}>
         <button onClick={onConfirm} style={{
           flex: 1, padding: '9px', borderRadius: 8,
-          background: `linear-gradient(135deg, ${C.green}, #1aaf63)`,
-          border: 'none', color: '#fff', fontFamily: 'Rajdhani, sans-serif',
-          fontWeight: 700, fontSize: 13, cursor: 'pointer',
+          background: C.accent, border: 'none',
+          color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer',
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
+          boxShadow: `0 2px 8px ${C.glow}`, transition: 'all .15s',
         }}>
           <Check size={14} /> Zatwierdź zmianę
         </button>
         <button onClick={onReject} style={{
           padding: '9px 14px', borderRadius: 8,
-          background: C.roseBg, border: `1px solid ${C.rose}44`,
+          background: C.roseBg, border: `1px solid rgba(239,68,68,0.25)`,
           color: C.rose, cursor: 'pointer',
-          display: 'flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 700,
+          display: 'flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600,
         }}>
           <X size={14} /> Anuluj
         </button>
@@ -97,20 +97,21 @@ function MessageBubble({ msg, onConfirm, onReject }: {
       <div style={{
         width: 32, height: 32, borderRadius: '50%', flexShrink: 0,
         background: isUser
-          ? `linear-gradient(135deg, ${C.accent}, ${C.blue})`
-          : `linear-gradient(135deg, #2d4a7a, #1a3060)`,
+          ? `linear-gradient(135deg, ${C.accent}, ${C.accent2})`
+          : C.c2,
+        border: isUser ? 'none' : `1px solid ${C.border}`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        boxShadow: isUser ? `0 0 12px ${C.glow}` : undefined,
+        boxShadow: isUser ? `0 2px 8px ${C.glow}` : undefined,
       }}>
-        {isUser ? <User size={15} color="#fff" /> : <Bot size={15} color={C.accent2} />}
+        {isUser ? <User size={15} color="#fff" /> : <Bot size={15} color={C.navy} />}
       </div>
       <div style={{ maxWidth: '80%', minWidth: 60 }}>
         <div style={{
           padding: '10px 14px', borderRadius: isUser ? '16px 4px 16px 16px' : '4px 16px 16px 16px',
-          background: isUser ? `linear-gradient(135deg, ${C.accent}, ${C.blue})` : C.subtle,
+          background: isUser ? `linear-gradient(135deg, ${C.accent}, ${C.accent2})` : C.c1,
           border: isUser ? 'none' : `1px solid ${C.border}`,
-          fontSize: 14, color: C.text, lineHeight: 1.6,
-          boxShadow: isUser ? `0 4px 16px ${C.glow}` : undefined,
+          fontSize: 14, color: isUser ? '#fff' : C.text, lineHeight: 1.6,
+          boxShadow: isUser ? `0 4px 14px ${C.glow}` : '0 1px 4px rgba(0,0,0,0.04)',
         }}>
           {msg.content}
         </div>
@@ -122,7 +123,7 @@ function MessageBubble({ msg, onConfirm, onReject }: {
           />
         )}
         {msg.changePreview?.confirmed === true && (
-          <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: C.green }}>
+          <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: C.accent }}>
             <Check size={13} /> Zmiana zastosowana
           </div>
         )}
@@ -143,16 +144,16 @@ function simulateResponse(userMsg: string): { content: string; changePreview?: C
 
   if (lower.includes('roas')) {
     return {
-      content: `📊 **ROAS Twoich kampanii (ostatnie 7 dni):**\n\n• Brand – Kadromierz [Search]: **5.81x** ✅\n• Retargeting – Display: **12.14x** 🚀\n• Competitor – PMAX: **2.64x** ⚠️\n• HR Software – Generic: **1.93x** ❌\n\nŚredni ROAS: **3.19x**. Polecam skupić się na kampanii HR Software – Generic — jest poniżej progu rentowności 2.5x. Rozważmy obniżenie stawek lub pauzę.`,
+      content: `ROAS Twoich kampanii (ostatnie 7 dni):\n\nBrand - Kadromierz [Search]: 5.81x\nRetargeting - Display: 12.14x\nCompetitor - PMAX: 2.64x\nHR Software - Generic: 1.93x\n\nSredni ROAS: 3.19x. Polecam skupić się na kampanii HR Software - Generic, jest poniżej progu rentowności 2.5x. Rozważmy obniżenie stawek lub pauzę.`,
     };
   }
 
   if (lower.includes('budżet') || lower.includes('budget') || lower.includes('zwiększ') || lower.includes('zwieksz')) {
     return {
-      content: `Rozumiem — chcesz zmienić budżet kampanii Brand – Kadromierz. Oto podgląd zmiany przed zastosowaniem:`,
+      content: `Rozumiem — chcesz zmienić budżet kampanii Brand - Kadromierz. Oto podgląd zmiany przed zastosowaniem:`,
       changePreview: {
         type: 'budget_change',
-        description: 'Zwiększenie dziennego budżetu kampanii "Brand – Kadromierz [Search]" o 20%.',
+        description: 'Zwiększenie dziennego budżetu kampanii "Brand - Kadromierz [Search]" o 20%.',
         before: { 'Budżet dzienny': '150 PLN' },
         after:  { 'Budżet dzienny': '180 PLN' },
         riskLevel: 'low',
@@ -162,10 +163,10 @@ function simulateResponse(userMsg: string): { content: string; changePreview?: C
 
   if (lower.includes('wstrzymaj') || lower.includes('pause') || lower.includes('pauza')) {
     return {
-      content: `Znalazłem kampanie z ROAS poniżej 2.0:\n\n• **HR Software – Generic [Search]** — ROAS: 1.93x, koszt: 8,996 PLN\n\nCzy chcesz wstrzymać tę kampanię?`,
+      content: `Znalazłem kampanie z ROAS poniżej 2.0:\n\nHR Software - Generic [Search] — ROAS: 1.93x, koszt: 8 996 PLN\n\nCzy chcesz wstrzymać tę kampanię?`,
       changePreview: {
         type: 'status_change',
-        description: 'Wstrzymanie kampanii "HR Software – Generic [Search]" z powodu niskiego ROAS.',
+        description: 'Wstrzymanie kampanii "HR Software - Generic [Search]" z powodu niskiego ROAS.',
         before: { Status: 'AKTYWNA', ROAS: '1.93x' },
         after:  { Status: 'WSTRZYMANA', 'Szacowane oszczędności': '300 PLN/d' },
         riskLevel: 'medium',
@@ -175,18 +176,18 @@ function simulateResponse(userMsg: string): { content: string; changePreview?: C
 
   if (lower.includes('porównaj') || lower.includes('compare') || lower.includes('poprzedni')) {
     return {
-      content: `📈 **Porównanie tygodniowe:**\n\n| Metryka | Ten tydzień | Poprzedni | Zmiana |\n|---|---|---|---|\n| Wydatki | 6,620 PLN | 6,142 PLN | **+7.8%** |\n| Kliknięcia | 3,218 | 2,994 | **+7.5%** |\n| Konwersje | 156 | 131 | **+19.1%** |\n| ROAS | 3.41x | 3.08x | **+10.7%** ✅ |\n\nDobra wiadomość — konwersje rosną szybciej niż wydatki. Warto zwiększyć budżety na kampaniach z najwyższym ROAS.`,
+      content: `Porównanie tygodniowe:\n\nWydatki: 6 620 PLN vs 6 142 PLN (+7.8%)\nKliknięcia: 3 218 vs 2 994 (+7.5%)\nKonwersje: 156 vs 131 (+19.1%)\nROAS: 3.41x vs 3.08x (+10.7%)\n\nDobra wiadomość — konwersje rosną szybciej niż wydatki. Warto zwiększyć budżety na kampaniach z najwyższym ROAS.`,
     };
   }
 
   if (lower.includes('stwórz') || lower.includes('nowa kampania') || lower.includes('utwórz')) {
     return {
-      content: `Chętnie pomogę stworzyć nową kampanię Search. Potrzebuję kilku informacji:\n\n1. **Nazwa produktu/usługi** — co reklamujesz?\n2. **Docelowy URL** — strona docelowa\n3. **Budżet dzienny** — ile PLN/dzień?\n4. **Docelowe słowa kluczowe** — lub mogę zaproponować na podstawie Twojej strony\n\nPodaj te dane, a przygotuję podgląd kampanii do zatwierdzenia.`,
+      content: `Chętnie pomogę stworzyć nową kampanię Search. Potrzebuję kilku informacji:\n\n1. Nazwa produktu/usługi — co reklamujesz?\n2. Docelowy URL — strona docelowa\n3. Budżet dzienny — ile PLN/dzień?\n4. Docelowe słowa kluczowe — lub mogę zaproponować na podstawie Twojej strony\n\nPodaj te dane, a przygotuję podgląd kampanii do zatwierdzenia.`,
     };
   }
 
   return {
-    content: `Rozumiem Twoje zapytanie dotyczące "${userMsg}". Na podstawie danych z konta:\n\n• Aktywne kampanie: 4\n• Łączne wydatki (30 dni): 28,330 PLN\n• Avg. ROAS: 3.19x\n\nCzy chcesz żebym zagłębił się w konkretną kampanię lub metrykę? Mogę też przygotować rekomendacje optymalizacyjne.`,
+    content: `Rozumiem Twoje zapytanie dotyczące "${userMsg}". Na podstawie danych z konta:\n\nAktywne kampanie: 4\nLączne wydatki (30 dni): 28 330 PLN\nAvg. ROAS: 3.19x\n\nCzy chcesz żebym zagłębił się w konkretną kampanię lub metrykę? Mogę też przygotować rekomendacje optymalizacyjne.`,
   };
 }
 
@@ -245,22 +246,22 @@ export default function Chat() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div style={{
             width: 36, height: 36, borderRadius: '50%',
-            background: `linear-gradient(135deg, #2d4a7a, #1a3060)`,
+            background: C.c2,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             border: `1px solid ${C.border}`,
           }}>
-            <Bot size={18} color={C.accent2} />
+            <Bot size={18} color={C.navy} />
           </div>
           <div>
             <div style={{ fontWeight: 700, fontSize: 14, color: C.text }}>AdsAI Assistant</div>
-            <div style={{ fontSize: 12, color: C.green, display: 'flex', alignItems: 'center', gap: 4 }}>
-              <span style={{ width: 6, height: 6, borderRadius: '50%', background: C.green, display: 'inline-block' }} />
+            <div style={{ fontSize: 12, color: C.accent, display: 'flex', alignItems: 'center', gap: 4 }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: C.accent, display: 'inline-block' }} />
               Połączony z Google Ads (DEMO)
             </div>
           </div>
           <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 5 }}>
-            <Zap size={13} color={C.accent2} />
-            <span style={{ fontSize: 11, color: C.accent2, fontWeight: 700 }}>Claude Opus</span>
+            <Zap size={13} color={C.accent} />
+            <span style={{ fontSize: 11, color: C.accent, fontWeight: 700 }}>Claude Opus</span>
           </div>
         </div>
       </div>
@@ -274,13 +275,13 @@ export default function Chat() {
           <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 16 }}>
             <div style={{
               width: 32, height: 32, borderRadius: '50%',
-              background: `linear-gradient(135deg, #2d4a7a, #1a3060)`,
+              background: C.c2, border: `1px solid ${C.border}`,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <Bot size={15} color={C.accent2} />
+              <Bot size={15} color={C.navy} />
             </div>
-            <div style={{ padding: '10px 14px', borderRadius: '4px 16px 16px 16px', background: C.subtle, border: `1px solid ${C.border}` }}>
-              <Loader size={14} color={C.accent2} style={{ animation: 'spin 1s linear infinite' }} />
+            <div style={{ padding: '10px 14px', borderRadius: '4px 16px 16px 16px', background: C.c1, border: `1px solid ${C.border}` }}>
+              <Loader size={14} color={C.accent} style={{ animation: 'spin 1s linear infinite' }} />
             </div>
           </div>
         )}
@@ -290,12 +291,12 @@ export default function Chat() {
       {/* Suggestions */}
       {showSuggestions && (
         <div style={{ padding: '8px 0', flexShrink: 0 }}>
-          <div style={{ fontSize: 11, color: C.text3, marginBottom: 8, fontWeight: 700, letterSpacing: 0.5 }}>SUGEROWANE PYTANIA</div>
+          <div style={{ fontSize: 11, color: C.text3, marginBottom: 8, fontWeight: 600, letterSpacing: 0.5 }}>SUGEROWANE PYTANIA</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {SUGGESTED.map(s => (
               <button key={s} onClick={() => send(s)} style={{
                 padding: '6px 12px', borderRadius: 99,
-                background: C.subtle, border: `1px solid ${C.border}`,
+                background: C.c1, border: `1px solid ${C.border}`,
                 color: C.text2, cursor: 'pointer', fontSize: 12,
                 transition: 'all .12s',
               }}>
@@ -310,8 +311,9 @@ export default function Chat() {
       <div style={{ padding: '12px 0 16px', flexShrink: 0 }}>
         <div style={{
           display: 'flex', gap: 8, alignItems: 'flex-end',
-          background: C.subtle, border: `1px solid ${C.border}`,
+          background: C.c1, border: `1px solid ${C.border}`,
           borderRadius: 14, padding: '8px 10px',
+          boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
         }}>
           <textarea
             value={input}
@@ -327,7 +329,7 @@ export default function Chat() {
           />
           <button onClick={() => send()} disabled={!input.trim() || loading} style={{
             width: 38, height: 38, borderRadius: 10, flexShrink: 0,
-            background: input.trim() ? `linear-gradient(135deg, ${C.accent}, ${C.blue})` : C.subtle,
+            background: input.trim() ? C.accent : C.c2,
             border: 'none', cursor: input.trim() ? 'pointer' : 'default',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             boxShadow: input.trim() ? `0 4px 12px ${C.glow}` : 'none',
