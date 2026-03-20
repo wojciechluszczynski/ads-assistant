@@ -1,4 +1,4 @@
-export type Page = 'dashboard' | 'chat' | 'campaigns' | 'reports' | 'insights' | 'settings';
+export type Page = 'dashboard' | 'campaigns' | 'reports' | 'insights' | 'settings';
 
 export interface Account {
   id: string;

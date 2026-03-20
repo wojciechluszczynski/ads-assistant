@@ -120,7 +120,16 @@ function StatCard({
   );
 }
 
+const LOOKER_EMBED = 'https://lookerstudio.google.com/embed/reporting/f22c02b3-5f8d-4292-bc22-1bc3bb640e73/page/p_4u92o69d3c';
+
+const REPORT_TABS = [
+  { id: 'ads',     label: 'Google Ads', desc: 'Analiza wydajności kampanii z Google Ads — trendy kosztów, ROAS, konwersje i podział wg ICP.' },
+  { id: 'looker',  label: 'Looker Studio', desc: 'Zewnętrzny raport Kadromierz z Looker Studio — pełny widok danych marketingowych i biznesowych.' },
+] as const;
+type ReportTab = typeof REPORT_TABS[number]['id'];
+
 export default function Reports() {
+  const [activeTab, setActiveTab] = useState<ReportTab>('ads');
   const [dateRange, setDateRange] = useState<DateRange>({
     from: new Date(Date.now() - 29 * 86400000),
     to: new Date(),
@@ -222,23 +231,44 @@ export default function Reports() {
             </p>
           </div>
         </div>
-        <DateRangePicker value={dateRange} onChange={setDateRange} />
+        {activeTab === 'ads' && <DateRangePicker value={dateRange} onChange={setDateRange} />}
       </div>
 
-      {/* Context banner */}
-      <div style={{
-        marginBottom: 24, padding: '10px 16px',
-        background: C.navyBg, border: `1px solid rgba(11,74,111,0.15)`, borderRadius: 10,
-        display: 'flex', alignItems: 'center', gap: 10,
-      }}>
-        <Target size={14} color={C.navyLight} />
-        <span style={{ fontSize: 12, color: C.navy, fontWeight: 500, fontFamily: 'Inter, sans-serif' }}>
-          Nowa sekcja: <strong>„Podział ruchu i budżetu wg segmentu ICP"</strong> — wizualizacja
-          wydatków i ROAS dla każdego segmentu z dokumentu <em>ICP Source of Truth</em>.
-          Cel Q1 2026: ≥ 70% budżetu na Gastronomia (P0) + Hospitality (P1) + Retail (P1).
-        </span>
+      {/* ── Tab bar ─────────────────────────────────────────────── */}
+      <div style={{ borderBottom: `1px solid ${C.border}`, marginBottom: 0 }}>
+        <div style={{ display: 'flex' }}>
+          {REPORT_TABS.map(t => (
+            <button key={t.id} onClick={() => setActiveTab(t.id)} style={{
+              padding: '10px 18px', border: 'none', background: 'transparent',
+              cursor: 'pointer', fontSize: 13.5, fontWeight: activeTab === t.id ? 700 : 500,
+              color: activeTab === t.id ? C.accent : C.text3,
+              borderBottom: `2px solid ${activeTab === t.id ? C.accent : 'transparent'}`,
+              marginBottom: -1, transition: 'color .15s', fontFamily: 'Inter, sans-serif',
+              whiteSpace: 'nowrap',
+            }}>{t.label}</button>
+          ))}
+        </div>
+      </div>
+      <div style={{ padding: '10px 14px', marginBottom: 24, background: '#F7F8FA', borderBottom: `1px solid ${C.border}`, fontSize: 12.5, color: C.text3 }}>
+        {REPORT_TABS.find(t => t.id === activeTab)?.desc}
       </div>
 
+      {/* ── Looker Studio tab ───────────────────────────────────── */}
+      {activeTab === 'looker' && (
+        <div style={{ borderRadius: 14, overflow: 'hidden', border: `1px solid ${C.border}`, background: '#fff' }}>
+          <iframe
+            src={LOOKER_EMBED}
+            width="100%"
+            height="700"
+            style={{ border: 'none', display: 'block' }}
+            allowFullScreen
+            title="Looker Studio — Kadromierz"
+          />
+        </div>
+      )}
+
+      {/* ── KPI cards (Google Ads tab only) ───────────────────── */}
+      {activeTab === 'ads' && <>
       {/* ── KPI cards ───────────────────────────────────────────────── */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 28 }}>
         {kpis.map(s => {
@@ -584,6 +614,7 @@ export default function Reports() {
           </div>
         </ChartCard>
       </div>
+      </> }
     </div>
   );
 }

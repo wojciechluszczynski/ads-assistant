@@ -81,12 +81,12 @@ function WidgetHeader({
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
       <h2 style={{ fontSize: 14, fontWeight: 700, color: C.text, margin: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
         <div style={{
-          width: 30, height: 30, borderRadius: 9, background: iconBg,
+          width: 28, height: 28, borderRadius: 8,
+          background: '#F1F3F5', border: '1px solid #E8ECF0',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: `0 3px 10px ${iconBg.includes('F97') ? C.glow : 'rgba(0,0,0,0.14)'}`,
           flexShrink: 0,
         }}>
-          <Icon size={14} color="#fff" />
+          <Icon size={14} color="#6B7280" strokeWidth={1.8} />
         </div>
         {title}
         <InfoTip text={tip} />
@@ -109,23 +109,17 @@ function StatCard({ label, value, sub, trend, iconBg, icon: Icon, tip, isPositiv
       ...card, padding: '22px 22px 18px',
       position: 'relative', overflow: 'hidden',
     }}>
-      {/* Top accent line */}
-      <div style={{
-        position: 'absolute', top: 0, left: 0, right: 0, height: 2,
-        background: iconBg, borderRadius: '14px 14px 0 0', opacity: 0.9,
-      }} />
-
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 14, marginTop: 2 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 14 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <span className="label-caps">{label}</span>
           <InfoTip text={tip} />
         </div>
         <div style={{
-          width: 38, height: 38, borderRadius: 11, background: iconBg, flexShrink: 0,
+          width: 34, height: 34, borderRadius: 10, flexShrink: 0,
+          background: '#F1F3F5', border: '1px solid #E8ECF0',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: `0 4px 14px ${iconBg.includes('F97') ? C.glow : 'rgba(0,0,0,0.14)'}`,
         }}>
-          <Icon size={17} color="#fff" strokeWidth={2.2} />
+          <Icon size={16} color="#6B7280" strokeWidth={1.8} />
         </div>
       </div>
 

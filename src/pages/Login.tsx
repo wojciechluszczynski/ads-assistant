@@ -39,10 +39,10 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
     }}>
       {/* ── Left dark panel ── */}
       <div style={{
-        width: 480, flexShrink: 0,
+        width: 460, flexShrink: 0,
         background: '#0D1117',
-        display: 'flex', flexDirection: 'column',
-        padding: '48px 48px 40px',
+        display: 'flex', flexDirection: 'column', justifyContent: 'center',
+        padding: '48px 48px',
         position: 'relative', overflow: 'hidden',
       }}
         className="login-left"
@@ -62,7 +62,7 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
         }} />
 
         {/* Logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 56, position: 'relative' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 40, position: 'relative' }}>
           <div style={{
             width: 40, height: 40, borderRadius: 11,
             background: 'linear-gradient(135deg,#F97316,#EA580C)',
@@ -75,7 +75,7 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
         </div>
 
         {/* Headline */}
-        <div style={{ position: 'relative', flex: 1 }}>
+        <div style={{ position: 'relative' }}>
           <h1 style={{
             fontSize: 34, fontWeight: 800, color: '#fff',
             lineHeight: 1.2, letterSpacing: -1, marginBottom: 14,

@@ -167,12 +167,15 @@ export default function DateRangePicker({ value, onChange }: Props) {
       setActivePreset('custom');
       return;
     }
+    // Presets apply immediately — no need to press Zastosuj
     setShowCustom(false);
     setActivePreset(preset.id);
     setPendingFrom(preset.from);
     setPendingTo(preset.to);
     setCustomStart(null);
     setCustomEnd(null);
+    onChange({ from: preset.from, to: preset.to, label: preset.label });
+    setOpen(false);
   }
 
   function handleDayClick(date: Date) {
@@ -410,24 +413,26 @@ export default function DateRangePicker({ value, onChange }: Props) {
               </div>
             )}
 
-            {/* Apply button */}
-            <div style={{ marginTop: 16, display: 'flex', justifyContent: 'flex-end' }}>
-              <button
-                onClick={handleApply}
-                disabled={showCustom && (!customStart || !customEnd)}
-                style={{
-                  padding: '9px 22px', borderRadius: 8,
-                  background: (showCustom && (!customStart || !customEnd)) ? C.c3 : C.accent,
-                  border: 'none', color: '#fff',
-                  fontSize: 13.5, fontWeight: 700, cursor: 'pointer',
-                  boxShadow: (showCustom && (!customStart || !customEnd)) ? 'none' : '0 4px 14px rgba(249,115,22,0.30)',
-                  transition: 'all .15s',
-                  fontFamily: 'Inter, sans-serif',
-                }}
-              >
-                Zastosuj
-              </button>
-            </div>
+            {/* Apply button — only shown for custom date ranges */}
+            {showCustom && (
+              <div style={{ marginTop: 16, display: 'flex', justifyContent: 'flex-end' }}>
+                <button
+                  onClick={handleApply}
+                  disabled={!customStart || !customEnd}
+                  style={{
+                    padding: '9px 22px', borderRadius: 8,
+                    background: (!customStart || !customEnd) ? C.c3 : C.accent,
+                    border: 'none', color: '#fff',
+                    fontSize: 13.5, fontWeight: 700, cursor: 'pointer',
+                    boxShadow: (!customStart || !customEnd) ? 'none' : '0 4px 14px rgba(249,115,22,0.30)',
+                    transition: 'all .15s',
+                    fontFamily: 'Inter, sans-serif',
+                  }}
+                >
+                  Zastosuj
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}

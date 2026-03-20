@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import {
-  LayoutDashboard, MessageSquare, Megaphone, BarChart2,
+  LayoutDashboard, Megaphone, BarChart2,
   Settings, Zap, FlaskConical, ChevronDown, Check, Menu, X,
 } from 'lucide-react';
 import type { Page, Account } from '../lib/types';
 
 const NAV_ITEMS: { id: Page; label: string; icon: typeof LayoutDashboard; badge?: string }[] = [
   { id: 'dashboard', label: 'Dashboard',  icon: LayoutDashboard },
-  { id: 'chat',      label: 'AI Asystent', icon: MessageSquare, badge: 'AI' },
   { id: 'campaigns', label: 'Kampanie',   icon: Megaphone       },
   { id: 'reports',   label: 'Raporty',    icon: BarChart2       },
   { id: 'insights',  label: 'Analizy',    icon: FlaskConical    },

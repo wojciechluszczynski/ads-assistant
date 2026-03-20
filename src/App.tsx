@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Sidebar from './components/Sidebar';
+import ChatBubble from './components/ChatBubble';
 import Dashboard from './pages/Dashboard';
-import Chat from './pages/Chat';
 import Campaigns from './pages/Campaigns';
 import Reports from './pages/Reports';
 import Insights from './pages/Insights';
@@ -29,12 +29,12 @@ export default function App() {
       />
       <main className="main-content" style={{ flex: 1, minWidth: 0, overflowY: 'auto', background: '#F7F8FA' }}>
         {page === 'dashboard' && <Dashboard onPage={setPage} />}
-        {page === 'chat'      && <Chat />}
         {page === 'campaigns' && <Campaigns />}
         {page === 'reports'   && <Reports />}
         {page === 'insights'  && <Insights onPage={setPage} />}
         {page === 'settings'  && <Settings />}
       </main>
+      <ChatBubble />
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import {
   AlertTriangle, TrendingDown, TrendingUp, Target, Users, Zap,
   BarChart2, ArrowRight, Info, RefreshCw, Minus,
+  Eye, HelpCircle, Ban, Shrink, Maximize2,
 } from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
@@ -16,10 +17,10 @@ interface Props { onPage: (p: Page) => void; }
 
 // ─── Tabs ─────────────────────────────────────────────────────────────────────
 const TABS = [
-  { id: 'funnel',    label: 'Lejek konwersji' },
-  { id: 'fatigue',   label: 'Zmęczenie kreacji' },
-  { id: 'keywords',  label: 'Analiza fraz' },
-  { id: 'bidding',   label: 'Strategie licytowania' },
+  { id: 'funnel',   label: 'Lejek konwersji',       desc: 'Wizualizacja ścieżki zakupowej przez 3 etapy. Identyfikuj etapy z największym drop-offem i optymalizuj alokację budżetu.' },
+  { id: 'fatigue',  label: 'Zmęczenie kreacji',      desc: 'Score zmęczenia 0–100 oparty o spadek CTR i częstotliwość. Kampanie z wynikiem ≥70 wymagają natychmiastowego odświeżenia kreacji.' },
+  { id: 'keywords', label: 'Analiza fraz',           desc: 'Ranking słów kluczowych wg ROAS. Znajdź wasted spend na frazach poniżej 2× oraz top performerów do skalowania budżetu.' },
+  { id: 'bidding',  label: 'Strategie licytowania',  desc: 'Rekomendacje bid strategy i targetowania bazujące na 30-dniowej historii wydajności. Każda rekomendacja zawiera oczekiwany wpływ na wyniki.' },
 ] as const;
 type TabId = typeof TABS[number]['id'];
 
@@ -82,9 +83,9 @@ export default function Insights({ onPage }: Props) {
 
   // ─── Funnel data ────────────────────────────────────────────────────────
   const funnelData = [
-    { stage: 'Awareness',     campaigns: 1, impressions: 28600, clicks: 286,   cost: 249,  conversions: 8,  roas: 4.82, color: '#3B82F6', icon: '👁' },
-    { stage: 'Consideration', campaigns: 2, impressions: 275400, clicks: 8262, cost: 22477, conversions: 285, roas: 2.52, color: '#8B5CF6', icon: '🤔' },
-    { stage: 'Conversion',    campaigns: 3, impressions: 472200, clicks: 5144, cost: 5604, conversions: 368, roas: 7.01, color: '#059669', icon: '🎯' },
+    { stage: 'Awareness',     step: 1, campaigns: 1, impressions: 28600, clicks: 286,   cost: 249,  conversions: 8,  roas: 4.82, Icon: Eye    },
+    { stage: 'Consideration', step: 2, campaigns: 2, impressions: 275400, clicks: 8262, cost: 22477, conversions: 285, roas: 2.52, Icon: HelpCircle },
+    { stage: 'Conversion',    step: 3, campaigns: 3, impressions: 472200, clicks: 5144, cost: 5604, conversions: 368, roas: 7.01, Icon: Target  },
   ];
   const totalConv = funnelData.reduce((a, s) => a + s.conversions, 0);
 
@@ -101,7 +102,7 @@ export default function Insights({ onPage }: Props) {
   const kwChart = MOCK_KEYWORDS.map(k => ({
     phrase: k.phrase.length > 22 ? k.phrase.slice(0, 22) + '…' : k.phrase,
     ROAS: k.roas,
-    fill: k.quality === 'top' ? C.accent : k.quality === 'good' ? C.teal : k.quality === 'average' ? C.orange : C.rose,
+    fill: k.quality === 'top' || k.quality === 'good' ? C.accent : k.quality === 'average' ? '#94A3B8' : C.rose,
   }));
 
   // ─── Bidding recos ──────────────────────────────────────────────────────
@@ -135,20 +136,10 @@ export default function Insights({ onPage }: Props) {
             Campaign Insights
           </h1>
           <p style={{ color: C.text3, fontSize: 13.5, margin: '5px 0 0' }}>
-            Funnel analysis · Creative fatigue · Keyword intelligence · Bid strategy
+            Głęboka analiza kampanii Kadromierz — 4 wymiary wydajności
           </p>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <DateRangePicker value={dateRange} onChange={setDateRange} />
-          <button onClick={() => onPage('chat')} className="btn-cta" style={{
-            display: 'flex', alignItems: 'center', gap: 6, padding: '9px 16px',
-            borderRadius: 8, background: G.orange, border: 'none',
-            color: '#fff', fontSize: 13, fontWeight: 700, cursor: 'pointer',
-            boxShadow: S.orange,
-          }}>
-            <Zap size={13} fill="#fff" /> Ask AI
-          </button>
-        </div>
+        <DateRangePicker value={dateRange} onChange={setDateRange} />
       </div>
 
       {/* ── Top KPI strip ──────────────────────────────────────── */}
@@ -160,27 +151,33 @@ export default function Insights({ onPage }: Props) {
       </div>
 
       {/* ── Tab bar ────────────────────────────────────────────── */}
+      <div style={{ borderBottom: `1px solid ${C.border}`, marginBottom: 0 }}>
+        <div style={{ display: 'flex', gap: 0 }}>
+          {TABS.map(t => (
+            <button
+              key={t.id}
+              onClick={() => setTab(t.id)}
+              style={{
+                padding: '10px 18px', border: 'none', background: 'transparent',
+                cursor: 'pointer', fontSize: 13.5, fontWeight: tab === t.id ? 700 : 500,
+                color: tab === t.id ? C.accent : C.text3,
+                borderBottom: `2px solid ${tab === t.id ? C.accent : 'transparent'}`,
+                marginBottom: -1, transition: 'color .15s, border-color .15s',
+                fontFamily: 'Inter, sans-serif', whiteSpace: 'nowrap',
+              }}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+      </div>
+      {/* Tab description */}
       <div style={{
-        display: 'flex', gap: 0, marginBottom: 20,
-        borderBottom: `1px solid ${C.border}`,
+        padding: '10px 14px', marginBottom: 20,
+        background: '#F7F8FA', borderBottom: `1px solid ${C.border}`,
+        fontSize: 12.5, color: C.text3, lineHeight: 1.5,
       }}>
-        {TABS.map(t => (
-          <button
-            key={t.id}
-            onClick={() => setTab(t.id)}
-            style={{
-              padding: '10px 18px', border: 'none', background: 'transparent',
-              cursor: 'pointer', fontSize: 13.5, fontWeight: tab === t.id ? 700 : 500,
-              color: tab === t.id ? C.accent : C.text3,
-              borderBottom: `2px solid ${tab === t.id ? C.accent : 'transparent'}`,
-              marginBottom: -1, transition: 'color .15s, border-color .15s',
-              fontFamily: 'Inter, sans-serif',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {t.label}
-          </button>
-        ))}
+        {TABS.find(t => t.id === tab)?.desc}
       </div>
 
       {/* ════════════════════════════════════════════════════════
@@ -199,18 +196,24 @@ export default function Insights({ onPage }: Props) {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14 }} className="grid-2col">
               {funnelData.map((stage, idx) => {
                 const convRate = idx > 0 ? ((stage.conversions / funnelData[idx-1].conversions) * 100).toFixed(1) : null;
+                const StageIcon = stage.Icon;
                 return (
                   <div key={stage.stage} style={{
-                    border: `1px solid ${stage.color}22`,
-                    borderTop: `3px solid ${stage.color}`,
-                    borderRadius: 10, padding: '18px 20px',
-                    background: '#fff', position: 'relative',
+                    ...card, padding: '18px 20px', position: 'relative',
                   }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 14 }}>
                       <div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 4 }}>
-                          <span style={{ fontSize: 16 }}>{stage.icon}</span>
-                          <span style={{ fontSize: 13, fontWeight: 700, color: stage.color }}>{stage.stage}</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                          <div style={{
+                            width: 28, height: 28, borderRadius: 8, flexShrink: 0,
+                            background: idx === 2 ? C.accentBg : C.c2,
+                            border: `1px solid ${idx === 2 ? C.accent + '33' : C.border}`,
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          }}>
+                            <StageIcon size={14} color={idx === 2 ? C.accent : C.text2} strokeWidth={2} />
+                          </div>
+                          <span style={{ fontSize: 13, fontWeight: 700, color: C.text }}>{stage.stage}</span>
+                          <span style={{ fontSize: 10, fontWeight: 700, color: C.text3, background: C.c2, border: `1px solid ${C.border}`, borderRadius: 4, padding: '1px 6px' }}>Etap {stage.step}</span>
                         </div>
                         <span style={{ fontSize: 10.5, color: C.text3 }}>{stage.campaigns} kampani{stage.campaigns === 1 ? 'a' : 'e'}</span>
                       </div>
@@ -224,8 +227,8 @@ export default function Insights({ onPage }: Props) {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 14 }}>
                       {[
-                        { l: 'Konwersje',    v: stage.conversions.toLocaleString('pl-PL'),  c: stage.color },
-                        { l: 'ROAS',         v: `${stage.roas.toFixed(2)}×`,                c: C.text      },
+                        { l: 'Konwersje',    v: stage.conversions.toLocaleString('pl-PL'),  c: C.green  },
+                        { l: 'ROAS',         v: `${stage.roas.toFixed(2)}×`,                c: stage.roas >= 3 ? C.green : C.orange },
                         { l: 'Kliknięcia',   v: stage.clicks.toLocaleString('pl-PL'),       c: C.text      },
                         { l: 'Wydatki',      v: `${stage.cost.toLocaleString('pl-PL')} PLN`, c: C.text3    },
                       ].map(m => (
@@ -578,7 +581,12 @@ export default function Insights({ onPage }: Props) {
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         fontSize: 16,
                       }}>
-                        {r.type === 'Exclusion' ? '🚫' : r.type === 'Narrowing' ? '🎯' : '📈'}
+                        {r.type === 'Exclusion'
+                          ? <Ban size={17} color={typeColor} />
+                          : r.type === 'Narrowing'
+                            ? <Shrink size={17} color={typeColor} />
+                            : <Maximize2 size={17} color={typeColor} />
+                        }
                       </div>
                       <div style={{ flex: 1 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4, flexWrap: 'wrap' }}>
