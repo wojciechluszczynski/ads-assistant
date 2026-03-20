@@ -1,69 +1,97 @@
-// Kadromierz Design System — adapted for AdsAI
-// Primary: Orange #F97316 | Navy: #0B4A6F | BG: #F8FAFC
+// Kadromierz Design System — Premium Edition
+// Primary: #F97316 | Navy: #0B4A6F | BG: #F8FAFC
 
 export const C = {
   // Backgrounds
-  bg:       '#F8FAFC',
-  c1:       '#FFFFFF',
-  c2:       '#F1F5F9',
+  bg:        '#F8FAFC',
+  c1:        '#FFFFFF',
+  c2:        '#F1F5F9',
+  c3:        '#E2E8F0',
 
-  // Primary orange (CTA, accents, active, icons)
-  accent:   '#F97316',
-  accent2:  '#EA580C',   // hover / darker orange
-  glow:     'rgba(249,115,22,0.18)',
+  // Primary orange
+  accent:    '#F97316',
+  accent2:   '#EA580C',
+  accentBg:  'rgba(249,115,22,0.08)',
+  accentBg2: 'rgba(249,115,22,0.14)',
+  glow:      'rgba(249,115,22,0.22)',
 
-  // Navy (headings, supplementary icons, borders)
-  navy:     '#0B4A6F',
-  navyLight:'#0EA5E9',
+  // Navy
+  navy:      '#0B4A6F',
+  navy2:     '#0C3D5C',
+  navyLight: '#0EA5E9',
+  navyBg:    'rgba(11,74,111,0.08)',
 
   // Surfaces
-  surface:  'rgba(249,115,22,0.04)',
-  subtle:   '#F8FAFC',
-  hi:       '#F1F5F9',
+  surface:   'rgba(249,115,22,0.04)',
+  subtle:    '#F8FAFC',
+  hi:        '#F1F5F9',
 
-  // Borders
-  border:   '#E2E8F0',
-  borderHi: '#CBD5E1',
+  // Borders — crisp 1px on retina
+  border:    'rgba(0,0,0,0.07)',
+  borderMd:  'rgba(0,0,0,0.11)',
 
   // Text
-  text:     '#1E293B',
-  text2:    '#64748B',
-  text3:    '#94A3B8',
+  text:      '#0F172A',
+  text2:     '#475569',
+  text3:     '#94A3B8',
 
-  // Status — green FORBIDDEN per DS, replaced by orange
-  green:    '#F97316',         // positive indicators → orange
-  greenBg:  'rgba(249,115,22,0.08)',
+  // Semantic — no green per DS, replaced by orange
+  green:     '#F97316',
+  greenBg:   'rgba(249,115,22,0.08)',
+  greenBdr:  'rgba(249,115,22,0.25)',
 
-  // Amber — warnings, paused states
-  orange:   '#F59E0B',
-  orangeBg: 'rgba(245,158,11,0.10)',
+  // Amber — warnings
+  orange:    '#D97706',
+  orangeBg:  'rgba(217,119,6,0.09)',
+  orangeBdr: 'rgba(217,119,6,0.28)',
 
-  // Red — errors, low ROAS, negative trend
-  rose:     '#EF4444',
-  roseBg:   'rgba(239,68,68,0.08)',
+  // Red — error / low ROAS
+  rose:      '#DC2626',
+  roseBg:    'rgba(220,38,38,0.07)',
+  roseBdr:   'rgba(220,38,38,0.22)',
 
-  yellow:   '#F59E0B',
-  yellowBg: 'rgba(245,158,11,0.10)',
-
-  // Purple FORBIDDEN per DS — neutralised to slate
-  purple:   '#94A3B8',
-  purpleBg: 'rgba(148,163,184,0.10)',
+  // Neutrals
+  yellow:    '#F59E0B',
+  yellowBg:  'rgba(245,158,11,0.10)',
+  purple:    '#64748B',
+  purpleBg:  'rgba(100,116,135,0.09)',
 } as const;
 
-// White glassmorphism (DS section 6)
+// ─── Gradient icon backgrounds ───────────────────────────────────────────────
+export const G = {
+  orange:  'linear-gradient(135deg,#F97316,#EA580C)',
+  navy:    'linear-gradient(135deg,#0B4A6F,#0EA5E9)',
+  amber:   'linear-gradient(135deg,#F59E0B,#D97706)',
+  sky:     'linear-gradient(135deg,#0EA5E9,#0284C7)',
+  slate:   'linear-gradient(135deg,#64748B,#475569)',
+  rose:    'linear-gradient(135deg,#EF4444,#DC2626)',
+  teal:    'linear-gradient(135deg,#14B8A6,#0D9488)',
+} as const;
+
+// ─── Shadow tokens ────────────────────────────────────────────────────────────
+export const S = {
+  card:      '0 0 0 1px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.05), 0 6px 20px rgba(0,0,0,0.05)',
+  cardHover: '0 0 0 1px rgba(0,0,0,0.06), 0 6px 24px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06)',
+  orange:    '0 4px 16px rgba(249,115,22,0.28)',
+  orangeHov: '0 6px 24px rgba(249,115,22,0.40)',
+  navy:      '0 4px 16px rgba(11,74,111,0.22)',
+  nav:       '0 1px 0 rgba(0,0,0,0.06), 0 4px 24px rgba(0,0,0,0.04)',
+  toast:     '0 8px 32px rgba(0,0,0,0.14), 0 1px 4px rgba(0,0,0,0.08)',
+} as const;
+
+// ─── White glassmorphism ──────────────────────────────────────────────────────
 export const glass = {
-  background: 'rgba(255,255,255,0.80)',
-  backdropFilter: 'blur(16px)',
-  WebkitBackdropFilter: 'blur(16px)',
-  border: '1px solid rgba(255,255,255,0.30)',
-  borderRadius: 16,
-  boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
+  background: 'rgba(255,255,255,0.75)',
+  backdropFilter: 'blur(24px) saturate(200%)',
+  WebkitBackdropFilter: 'blur(24px) saturate(200%)',
+  border: '1px solid rgba(255,255,255,0.65)',
+  boxShadow: '0 4px 24px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.92)',
 } as const;
 
-// Standard card (DS 5.3)
+// ─── Standard card ────────────────────────────────────────────────────────────
 export const card = {
   background: '#FFFFFF',
-  border: '1px solid #E2E8F0',
+  border: '1px solid rgba(0,0,0,0.06)',
   borderRadius: 16,
-  boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+  boxShadow: S.card,
 } as const;

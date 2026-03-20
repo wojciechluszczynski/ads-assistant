@@ -1,4 +1,4 @@
-export type Page = 'dashboard' | 'chat' | 'campaigns' | 'reports' | 'settings';
+export type Page = 'dashboard' | 'chat' | 'campaigns' | 'reports' | 'insights' | 'settings';
 
 export interface Account {
   id: string;
@@ -10,23 +10,45 @@ export interface Account {
 
 export type CampaignStatus = 'ENABLED' | 'PAUSED' | 'REMOVED';
 export type CampaignType = 'SEARCH' | 'DISPLAY' | 'SHOPPING' | 'VIDEO' | 'PERFORMANCE_MAX';
+export type FunnelStage = 'awareness' | 'consideration' | 'conversion';
 
 export interface Campaign {
   id: string;
   name: string;
   status: CampaignStatus;
   type: CampaignType;
-  budgetMicros: number;   // budget in micros (1 PLN = 1_000_000)
+  budgetMicros: number;
   currency: string;
   impressions: number;
   clicks: number;
-  ctr: number;            // %
-  avgCpc: number;         // PLN
-  cost: number;           // PLN
+  ctr: number;
+  avgCpc: number;
+  cost: number;
   conversions: number;
   conversionValue: number;
-  roas: number;           // revenue / cost
+  roas: number;
   startDate: string;
+  // New analytics fields
+  funnelStage: FunnelStage;
+  fatigueScore: number;      // 0–100: ad creative fatigue
+  ctrTrend: number;          // % change week-over-week
+  bidStrategy: string;
+  targetAudience: string;
+  weeklyImpressionsData: number[];  // last 7 weeks for sparkline
+  weeklyCtrData: number[];
+}
+
+export interface KeywordData {
+  phrase: string;
+  impressions: number;
+  clicks: number;
+  ctr: number;
+  avgCpc: number;
+  cost: number;
+  conversions: number;
+  convRate: number;
+  roas: number;
+  quality: 'top' | 'good' | 'average' | 'poor';
 }
 
 export interface DailyMetric {
