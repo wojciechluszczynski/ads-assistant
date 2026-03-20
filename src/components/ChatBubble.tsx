@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { MessageSquare, X, Send, Zap, Minimize2 } from 'lucide-react';
+import { MessageSquare, Send, Zap, Minimize2 } from 'lucide-react';
 import { C } from '../lib/theme';
 
 interface Message {

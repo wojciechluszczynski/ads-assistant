@@ -1,19 +1,16 @@
 import { useState } from 'react';
 import {
-  AlertTriangle, TrendingDown, TrendingUp, Target, Users, Zap,
-  BarChart2, ArrowRight, Info, RefreshCw, Minus,
+  AlertTriangle, TrendingDown, TrendingUp, Target, Zap,
+  ArrowRight,
   Eye, HelpCircle, Ban, Shrink, Maximize2,
 } from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, Cell, AreaChart, Area, LineChart, Line, ReferenceLine,
+  ResponsiveContainer, Cell, AreaChart, Area, ReferenceLine,
 } from 'recharts';
 import { C, G, S, card, sectionCard } from '../lib/theme';
 import { MOCK_CAMPAIGNS, MOCK_KEYWORDS, MOCK_DAILY } from '../lib/mockData';
 import DateRangePicker, { type DateRange } from '../components/DateRangePicker';
-import type { Page } from '../lib/types';
-
-interface Props { onPage: (p: Page) => void; }
 
 // ─── Tabs ─────────────────────────────────────────────────────────────────────
 const TABS = [
@@ -73,7 +70,7 @@ function StatPill({ label, value, delta, color }: { label: string; value: string
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
-export default function Insights({ onPage }: Props) {
+export default function Insights() {
   const [tab, setTab] = useState<TabId>('funnel');
   const [dateRange, setDateRange] = useState<DateRange>({
     from: new Date(Date.now() - 29 * 86400000),

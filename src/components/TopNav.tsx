@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { LayoutDashboard, MessageSquare, Megaphone, BarChart2, Settings, Menu, X, Zap, FlaskConical } from 'lucide-react';
+import { LayoutDashboard, Megaphone, BarChart2, Settings, Menu, X, Zap, FlaskConical } from 'lucide-react';
 import { C, G, S } from '../lib/theme';
 import type { Page } from '../lib/types';
 import type { Account } from '../lib/types';
 
 const NAV_ITEMS: { id: Page; label: string; icon: typeof LayoutDashboard }[] = [
   { id: 'dashboard', label: 'Dashboard',  icon: LayoutDashboard },
-  { id: 'chat',      label: 'AI Chat',    icon: MessageSquare   },
   { id: 'campaigns', label: 'Kampanie',   icon: Megaphone       },
   { id: 'reports',   label: 'Raporty',    icon: BarChart2       },
   { id: 'insights',  label: 'Analizy',    icon: FlaskConical    },

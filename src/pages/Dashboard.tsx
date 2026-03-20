@@ -73,9 +73,9 @@ function InfoTip({ text, align = 'left' }: { text: string; align?: 'left' | 'rig
 
 // ─── Widget header ────────────────────────────────────────────────────────────
 function WidgetHeader({
-  iconBg, icon: Icon, title, tip, action,
+  icon: Icon, title, tip, action,
 }: {
-  iconBg: string; icon: typeof Zap; title: string; tip: string; action?: React.ReactNode;
+  icon: typeof Zap; title: string; tip: string; action?: React.ReactNode;
 }) {
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
@@ -99,10 +99,10 @@ function WidgetHeader({
 // ─── Premium Stat Card ────────────────────────────────────────────────────────
 interface StatCardProps {
   label: string; value: string; sub?: string; trend?: number;
-  iconBg: string; icon: typeof TrendingUp; tip: string;
+  icon: typeof TrendingUp; tip: string;
   isPositive?: (t: number) => boolean;
 }
-function StatCard({ label, value, sub, trend, iconBg, icon: Icon, tip, isPositive }: StatCardProps) {
+function StatCard({ label, value, sub, trend, icon: Icon, tip, isPositive }: StatCardProps) {
   const pos = trend !== undefined ? (isPositive ? isPositive(trend) : trend >= 0) : true;
   return (
     <div className="card-lift" style={{
@@ -168,8 +168,8 @@ function Sparkline({ data, color }: { data: number[]; color: string }) {
 }
 
 // ─── AI Recommendation Item ───────────────────────────────────────────────────
-function RecoItem({ icon: Icon, iconBg, badge, badgeColor, badgeBg, title, body, onAction }: {
-  icon: typeof Zap; iconBg: string; badge: string;
+function RecoItem({ icon: Icon, badge, badgeColor, badgeBg, title, body, onAction }: {
+  icon: typeof Zap; badge: string;
   badgeColor: string; badgeBg: string; title: string; body: string; onAction: () => void;
 }) {
   return (
@@ -179,11 +179,11 @@ function RecoItem({ icon: Icon, iconBg, badge, badgeColor, badgeBg, title, body,
       alignItems: 'flex-start', transition: 'border-color .15s, box-shadow .15s',
     }}>
       <div style={{
-        width: 36, height: 36, borderRadius: 10, background: iconBg, flexShrink: 0,
+        width: 36, height: 36, borderRadius: 10, background: '#F1F3F5', flexShrink: 0,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.10)',
+        border: '1px solid #E8ECF0',
       }}>
-        <Icon size={16} color="#fff" />
+        <Icon size={16} color="#6B7280" />
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 4, flexWrap: 'wrap' }}>
@@ -292,8 +292,8 @@ export default function Dashboard({ onPage }: Props) {
   const icpConvPct     = Math.round((icpConversions / MOCK_SUMMARY.totalConversions) * 100);
 
   const priorities = [
-    { urgency: 'hot'    as const, campaign: 'HR Software – Generic',  action: 'CTR spada –22% tydzień do tygodnia. Wysoki wskaźnik zmęczenia (78/100) — odśwież kreacje lub wstrzymaj kampanię. Segment: poza ICP (Fit Score 38).', cta: 'Wstrzymaj',  page: 'chat'     as Page },
-    { urgency: 'warm'   as const, campaign: 'Competitor – PMAX',      action: 'Budżet wyczerpywany o 14:00. ROAS 2.64x — rozważ zwiększenie budżetu lub zmianę strategii. Segment ICP: Hospitality (Fit Score 82).', cta: 'Optymalizuj', page: 'chat'     as Page },
+    { urgency: 'hot'    as const, campaign: 'HR Software – Generic',  action: 'CTR spada –22% tydzień do tygodnia. Wysoki wskaźnik zmęczenia (78/100) — odśwież kreacje lub wstrzymaj kampanię. Segment: poza ICP (Fit Score 38).', cta: 'Wstrzymaj',  page: 'insights' as Page },
+    { urgency: 'warm'   as const, campaign: 'Competitor – PMAX',      action: 'Budżet wyczerpywany o 14:00. ROAS 2.64x — rozważ zwiększenie budżetu lub zmianę strategii. Segment ICP: Hospitality (Fit Score 82).', cta: 'Optymalizuj', page: 'insights' as Page },
     { urgency: 'normal' as const, campaign: 'Retargeting – Display',  action: 'CTR spada od 4 tygodni (–14%). Odśwież banery i zawęź listę remarketingową. Segment ICP: Retail (Fit Score 90).', cta: 'Analizuj',    page: 'insights' as Page },
   ];
   const urgCfg = {
@@ -394,15 +394,6 @@ export default function Dashboard({ onPage }: Props) {
             )}
           </div>
 
-          <button onClick={() => onPage('chat')} className="btn-cta" style={{
-            display: 'flex', alignItems: 'center', gap: 7,
-            padding: '10px 18px', borderRadius: 10,
-            background: G.orange, border: 'none',
-            color: '#fff', fontSize: 13.5, fontWeight: 700, cursor: 'pointer',
-            boxShadow: S.orange,
-          }}>
-            <Zap size={14} fill="#fff" /> Zapytaj AI
-          </button>
         </div>
       </div>
 
@@ -418,12 +409,12 @@ export default function Dashboard({ onPage }: Props) {
       {/* ── KPI stat cards ─────────────────────────────────── */}
       {isVisible('kpi') && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14, marginBottom: 24 }} className="grid-stat">
-          <StatCard label="Wydatki (30d)"        value={fmtPLN(s.totalCost)}            trend={+4.2}  sub="vs. poprzedni okres"                iconBg={G.navy}   icon={DollarSign}        tip="Całkowite wydatki na reklamy w ciągu ostatnich 30 dni." />
-          <StatCard label="Przychód z konwersji" value={fmtPLN(s.totalConversionValue)} trend={+11.8} sub="wartość konwersji"                   iconBg={G.orange} icon={ShoppingCart}      tip="Łączna wartość konwersji przypisana do reklam (Google Ads tracking)." />
-          <StatCard label="Średni ROAS"          value={`${s.avgRoas.toFixed(2)}x`}     trend={+7.1}  sub="przychód / koszt"                   iconBg={G.orange} icon={TrendingUp}        tip="Return on Ad Spend — ile PLN przychodu generuje 1 PLN wydany na reklamy. Cel: ≥3.0x dla ICP." />
-          <StatCard label="Kliknięcia"           value={fmt(s.totalClicks)}             trend={+3.5}  sub={`CTR: ${fmtPct(s.avgCtr)}`}         iconBg={G.sky}    icon={MousePointerClick} tip="Łączna liczba kliknięć w reklamy. CTR = % osób, które kliknęły po zobaczeniu reklamy." />
-          <StatCard label="Wyświetlenia"         value={fmt(s.totalImpressions)}        trend={-1.2}  sub="impressions"                        iconBg={G.slate}  icon={Eye}               tip="Liczba wyświetleń reklam. Wysoka liczba przy niskim CTR = zły dobór słów kluczowych." isPositive={t => t >= 0} />
-          <StatCard label="Konwersje"            value={fmt(s.totalConversions)}        trend={+14.0} sub={`avg CPC: ${s.avgCpc.toFixed(2)} PLN`} iconBg={G.orange} icon={Activity}        tip="Liczba pożądanych akcji (rejestracje, zakupy). CPC = średni koszt za kliknięcie." />
+          <StatCard label="Wydatki (30d)"        value={fmtPLN(s.totalCost)}            trend={+4.2}  sub="vs. poprzedni okres"                icon={DollarSign}        tip="Całkowite wydatki na reklamy w ciągu ostatnich 30 dni." />
+          <StatCard label="Przychód z konwersji" value={fmtPLN(s.totalConversionValue)} trend={+11.8} sub="wartość konwersji"                   icon={ShoppingCart}      tip="Łączna wartość konwersji przypisana do reklam (Google Ads tracking)." />
+          <StatCard label="Średni ROAS"          value={`${s.avgRoas.toFixed(2)}x`}     trend={+7.1}  sub="przychód / koszt"                   icon={TrendingUp}        tip="Return on Ad Spend — ile PLN przychodu generuje 1 PLN wydany na reklamy. Cel: ≥3.0x dla ICP." />
+          <StatCard label="Kliknięcia"           value={fmt(s.totalClicks)}             trend={+3.5}  sub={`CTR: ${fmtPct(s.avgCtr)}`}         icon={MousePointerClick} tip="Łączna liczba kliknięć w reklamy. CTR = % osób, które kliknęły po zobaczeniu reklamy." />
+          <StatCard label="Wyświetlenia"         value={fmt(s.totalImpressions)}        trend={-1.2}  sub="impressions"                        icon={Eye}               tip="Liczba wyświetleń reklam. Wysoka liczba przy niskim CTR = zły dobór słów kluczowych." isPositive={t => t >= 0} />
+          <StatCard label="Konwersje"            value={fmt(s.totalConversions)}        trend={+14.0} sub={`avg CPC: ${s.avgCpc.toFixed(2)} PLN`} icon={Activity}        tip="Liczba pożądanych akcji (rejestracje, zakupy). CPC = średni koszt za kliknięcie." />
         </div>
       )}
 
@@ -437,7 +428,7 @@ export default function Dashboard({ onPage }: Props) {
           {isVisible('priorities') && (
             <div style={{ ...card, padding: '22px 24px' }}>
               <WidgetHeader
-                iconBg={G.amber} icon={AlertTriangle}
+                icon={AlertTriangle}
                 title="Priorytety na dziś"
                 tip="Kampanie wymagające pilnej uwagi — na podstawie zmęczenia kreacji, trendów CTR i ICP Fit Score."
                 action={
@@ -492,7 +483,7 @@ export default function Dashboard({ onPage }: Props) {
           {isVisible('icp') && (
             <div style={{ ...card, padding: '22px 24px' }}>
               <WidgetHeader
-                iconBg={G.orange} icon={Target}
+                icon={Target}
                 title="Podział budżetu wg segmentu ICP"
                 tip={`ICP (Ideal Customer Profile) wg dokumentu „ICP Source of Truth". P0: Gastronomia & Food Service. P1: Hospitality, Retail. Cel: ≥70% budżetu na P0+P1.`}
                 action={
@@ -570,7 +561,7 @@ export default function Dashboard({ onPage }: Props) {
           {isVisible('ai_reco') && (
             <div style={{ ...card, padding: '22px 24px' }}>
               <WidgetHeader
-                iconBg={G.orange} icon={Lightbulb}
+                icon={Lightbulb}
                 title="Rekomendacje AI"
                 tip="Automatyczne rekomendacje optymalizacyjne na podstawie zmęczenia kreacji, trendów CTR i dopasowania do ICP."
                 action={
@@ -588,7 +579,7 @@ export default function Dashboard({ onPage }: Props) {
                 {highFatigue.slice(0, 2).map(c => (
                   <RecoItem
                     key={c.id}
-                    icon={AlertTriangle} iconBg={G.amber}
+                    icon={AlertTriangle}
                     badge="Zmęczenie materiałów"
                     badgeColor={C.orange} badgeBg={C.orangeBg}
                     title={c.name}
@@ -597,20 +588,20 @@ export default function Dashboard({ onPage }: Props) {
                   />
                 ))}
                 <RecoItem
-                  icon={Target} iconBg={G.navy}
+                  icon={Target}
                   badge="Strategia licytowania"
                   badgeColor={C.navyLight} badgeBg={C.navyBg}
                   title="Brand – Kadromierz: przejdź na Target ROAS"
                   body="Kampania ma stabilny ROAS 5.81x przez 30 dni. Przejście z Target CPA na Target ROAS (5.0x) może zwiększyć wolumen konwersji o ~15%."
-                  onAction={() => onPage('chat')}
+                  onAction={() => onPage('insights')}
                 />
                 <RecoItem
-                  icon={Users} iconBg={G.teal}
+                  icon={Users}
                   badge="Targetowanie ICP"
                   badgeColor={C.teal} badgeBg={C.tealBg}
                   title="Skaluj budżet: segment Gastronomia (P0)"
                   body={`Gastronomia generuje 39% przychodów Kadromierza. Brand i Remarketing w tym segmencie mają Fit Score 115+ i ROAS powyżej 5x — idealny czas na skalowanie.`}
-                  onAction={() => onPage('chat')}
+                  onAction={() => onPage('insights')}
                 />
               </div>
             </div>

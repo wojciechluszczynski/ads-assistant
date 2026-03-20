@@ -23,7 +23,6 @@ function sameDay(a: Date, b: Date) { return a.toDateString() === b.toDateString(
 function isBefore(a: Date, b: Date) { return a < b; }
 function isBetween(d: Date, from: Date, to: Date) { return d >= from && d <= to; }
 
-const MONTH_NAMES_PL = ['Sty', 'Lut', 'Mar', 'Kwi', 'Maj', 'Cze', 'Lip', 'Sie', 'Wrz', 'Paź', 'Lis', 'Gru'];
 const MONTH_FULL_PL  = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
 const WEEKDAYS_PL    = ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Nd'];
 
@@ -95,7 +94,7 @@ function MonthCalendar({
           const isToday = sameDay(date, t);
           const isFuture = date > t;
 
-          let bg = 'transparent', color = isFuture ? C.text3 : C.text;
+          let bg = 'transparent', color: string = isFuture ? C.text3 : C.text;
           if (isStart || isEnd) { bg = C.accent; color = '#fff'; }
           else if (inRange) { bg = 'rgba(249,115,22,0.10)'; color = C.text; }
 

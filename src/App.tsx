@@ -31,7 +31,7 @@ export default function App() {
         {page === 'dashboard' && <Dashboard onPage={setPage} />}
         {page === 'campaigns' && <Campaigns />}
         {page === 'reports'   && <Reports />}
-        {page === 'insights'  && <Insights onPage={setPage} />}
+        {page === 'insights'  && <Insights />}
         {page === 'settings'  && <Settings />}
       </main>
       <ChatBubble />
