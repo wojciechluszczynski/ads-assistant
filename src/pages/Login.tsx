@@ -42,7 +42,7 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
     }}>
       {/* ── Left decorative panel ─────────────────────────────────────── */}
       <div style={{
-        flex: '0 0 58%',
+        flex: '0 0 55%',
         background: 'linear-gradient(145deg, #0F172A 0%, #1E293B 50%, #0F172A 100%)',
         display: 'flex',
         flexDirection: 'column',
@@ -92,14 +92,14 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
 
           {/* Headline */}
           <h1 style={{
-            fontSize: 36, fontWeight: 800, color: '#F8FAFC',
-            lineHeight: 1.15, letterSpacing: -1, margin: '0 0 12px',
+            fontSize: 38, fontWeight: 800, color: '#F8FAFC',
+            lineHeight: 1.12, letterSpacing: -1.1, margin: '0 0 14px',
           }}>
-            Twoje kampanie<br />
-            pod kontrolą AI
+            Google Ads<br />
+            na sterydach
           </h1>
           <p style={{ fontSize: 15, color: '#94A3B8', margin: '0 0 40px', lineHeight: 1.65, maxWidth: 380 }}>
-            Monitoruj ROAS, wykrywaj zmęczenie kreacji i otrzymuj inteligentne rekomendacje — wszystko w jednym miejscu.
+            AI optymalizuje Twoje kampanie zanim zdążysz wypić kawę — ROAS, zmęczenie kreacji, ICP scoring i rekomendacje bidów w jednym miejscu.
           </p>
 
           {/* Stats row */}

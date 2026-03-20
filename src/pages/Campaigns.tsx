@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Play, Pause, Search, Filter, Plus, ExternalLink, TrendingDown, TrendingUp, Minus, Info, CheckCircle } from 'lucide-react';
+import { Play, Pause, Search, Filter, Plus, ExternalLink, TrendingDown, TrendingUp, Minus, Info, CheckCircle, Eye, HelpCircle, Target as TargetIcon } from 'lucide-react';
 import { AreaChart, Area, ResponsiveContainer, Tooltip } from 'recharts';
 import { C, G, S, card } from '../lib/theme';
 import { MOCK_CAMPAIGNS, MOCK_ICP_SEGMENTS } from '../lib/mockData';
 import type { Campaign, CampaignStatus, FunnelStage, IcpStatus } from '../lib/types';
+import DateRangePicker, { type DateRange } from '../components/DateRangePicker';
 
 // ─── Config maps ─────────────────────────────────────────────────────────────
 const STATUS_CFG: Record<CampaignStatus, { label: string; color: string; bg: string; bdr: string }> = {
@@ -12,16 +13,16 @@ const STATUS_CFG: Record<CampaignStatus, { label: string; color: string; bg: str
   REMOVED:  { label: 'Usunięta',  color: C.rose,    bg: C.roseBg,               bdr: C.roseBdr              },
 };
 
-const FUNNEL_CFG: Record<FunnelStage, { label: string; color: string; bg: string; bdr: string; icon: string }> = {
-  awareness:     { label: 'Świadomość',  color: '#0284C7', bg: 'rgba(14,165,233,0.09)',  bdr: 'rgba(14,165,233,0.28)', icon: '👁' },
-  consideration: { label: 'Rozważanie',  color: '#7C3AED', bg: 'rgba(124,58,237,0.09)',  bdr: 'rgba(124,58,237,0.28)', icon: '🤔' },
-  conversion:    { label: 'Konwersja',   color: '#059669', bg: 'rgba(5,150,105,0.09)',   bdr: 'rgba(5,150,105,0.28)', icon: '🎯' },
+const FUNNEL_CFG: Record<FunnelStage, { label: string; color: string; bg: string; bdr: string; Icon: typeof Eye }> = {
+  awareness:     { label: 'Świadomość', color: '#0284C7', bg: 'rgba(14,165,233,0.08)',  bdr: 'rgba(14,165,233,0.22)', Icon: Eye         },
+  consideration: { label: 'Rozważanie', color: '#7C3AED', bg: 'rgba(124,58,237,0.08)',  bdr: 'rgba(124,58,237,0.22)', Icon: HelpCircle  },
+  conversion:    { label: 'Konwersja',  color: '#059669', bg: 'rgba(5,150,105,0.08)',   bdr: 'rgba(5,150,105,0.22)', Icon: TargetIcon   },
 };
 
 const ICP_STATUS_CFG: Record<IcpStatus, { label: string; color: string; bg: string; bdr: string }> = {
-  high:    { label: '🔴 High ICP', color: C.rose,       bg: C.roseBg,    bdr: C.roseBdr   },
-  core:    { label: '🟠 Core ICP', color: C.orange,     bg: C.orangeBg,  bdr: C.orangeBdr },
-  outside: { label: '⚪ Poza ICP', color: C.text3,      bg: C.c2,        bdr: C.border    },
+  high:    { label: 'High ICP', color: C.rose,   bg: C.roseBg,   bdr: C.roseBdr   },
+  core:    { label: 'Core ICP', color: C.orange, bg: C.orangeBg, bdr: C.orangeBdr },
+  outside: { label: 'Poza ICP', color: C.text3,  bg: C.c2,       bdr: C.border    },
 };
 
 const TYPE_LABEL: Record<string, string> = {
@@ -131,7 +132,10 @@ function CampaignRow({ c, onToggle }: { c: Campaign; onToggle: (id: string) => v
           <span style={{
             fontSize: 10, fontWeight: 700, padding: '1px 7px', borderRadius: 99,
             background: fn.bg, color: fn.color, border: `1px solid ${fn.bdr}`,
-          }}>{fn.icon} {fn.label}</span>
+            display: 'inline-flex', alignItems: 'center', gap: 3,
+          }}>
+            <fn.Icon size={9} /> {fn.label}
+          </span>
         </div>
       </td>
 
@@ -152,7 +156,7 @@ function CampaignRow({ c, onToggle }: { c: Campaign; onToggle: (id: string) => v
             display: 'inline-block', marginBottom: 4,
           }}>{ic.label}</span>
           <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-            {segData && <span style={{ fontSize: 10, color: C.text2 }}>{segData.emoji} {c.icpSegment}</span>}
+            {segData && <span style={{ fontSize: 10, color: C.text2 }}>{c.icpSegment}</span>}
           </div>
           {/* Fit score mini-bar */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 4 }}>
@@ -257,6 +261,15 @@ export default function Campaigns() {
   const [filterFunnel, setFilterFunnel] = useState<FunnelStage | 'ALL'>('ALL');
   const [filterIcp, setFilterIcp]       = useState<IcpStatus | 'ALL'>('ALL');
   const [toast, setToast]               = useState<string | null>(null);
+  const [dateRange, setDateRange] = useState<DateRange>({
+    from: new Date(Date.now() - 29 * 86400000),
+    to: new Date(),
+    label: 'Ostatnie 30 dni',
+  });
+
+  // Scale numeric metrics proportionally to selected date range (30d baseline)
+  const selectedDays = Math.max(1, Math.round((dateRange.to.getTime() - dateRange.from.getTime()) / 86400000) + 1);
+  const scale = selectedDays / 30;
 
   const filtered = campaigns.filter(c => {
     const matchSearch = c.name.toLowerCase().includes(search.toLowerCase());
@@ -276,10 +289,16 @@ export default function Campaigns() {
     }));
   }
 
-  const totals = filtered.reduce((acc, c) => ({
+  const totalsRaw = filtered.reduce((acc, c) => ({
     cost: acc.cost + c.cost, clicks: acc.clicks + c.clicks,
     conversions: acc.conversions + c.conversions, value: acc.value + c.conversionValue,
   }), { cost: 0, clicks: 0, conversions: 0, value: 0 });
+  const totals = {
+    cost:        Math.round(totalsRaw.cost        * scale),
+    clicks:      Math.round(totalsRaw.clicks      * scale),
+    conversions: Math.round(totalsRaw.conversions * scale),
+    value:       Math.round(totalsRaw.value       * scale),
+  };
   const avgRoas = totals.cost > 0 ? totals.value / totals.cost : 0;
 
   const TABLE_HEADERS: { label: string; tip: string }[] = [
@@ -300,14 +319,16 @@ export default function Campaigns() {
     <div className="page-container fade-up">
 
       {/* ── Header ─────────────────────────────────────────── */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8, flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h1 style={{ fontSize: 28, fontWeight: 800, color: C.text, margin: 0, letterSpacing: -0.7 }}>Kampanie</h1>
           <p style={{ color: C.text3, fontSize: 13, margin: '3px 0 0' }}>
-            {filtered.length} kampanii · ostatnie 30 dni · kolumna ICP z dokumentu „ICP Source of Truth"
+            {filtered.length} kampanii · {dateRange.label} · kolumna ICP z dokumentu „ICP Source of Truth"
           </p>
         </div>
-        <button className="btn-cta" style={{
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+          <DateRangePicker value={dateRange} onChange={setDateRange} />
+          <button className="btn-cta" style={{
           display: 'flex', alignItems: 'center', gap: 6,
           padding: '10px 20px', borderRadius: 10,
           background: G.orange, border: 'none',
@@ -316,6 +337,7 @@ export default function Campaigns() {
         }}>
           <Plus size={15} /> Nowa kampania
         </button>
+        </div>
       </div>
 
       {/* ── Page context ────────────────────────────────────── */}
@@ -335,10 +357,10 @@ export default function Campaigns() {
       {/* ── Summary bar ─────────────────────────────────────── */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 18 }}>
         {[
-          { label: 'Wydatki',    value: `${totals.cost.toLocaleString('pl-PL', { maximumFractionDigits: 0 })} PLN`, color: C.navy,   bg: G.navy    },
-          { label: 'ROAS',       value: `${avgRoas.toFixed(2)}x`, color: avgRoas >= 3 ? C.accent : avgRoas >= 2 ? C.navyLight : C.rose, bg: avgRoas >= 3 ? G.orange : avgRoas >= 2 ? G.sky : G.rose },
-          { label: 'Kliknięcia', value: totals.clicks.toLocaleString('pl-PL'),       color: C.text,   bg: G.slate   },
-          { label: 'Konwersje',  value: totals.conversions.toLocaleString('pl-PL'),  color: C.accent, bg: G.orange  },
+          { label: 'Wydatki',    value: `${totals.cost.toLocaleString('pl-PL', { maximumFractionDigits: 0 })} PLN`, color: C.text   },
+          { label: 'ROAS',       value: `${avgRoas.toFixed(2)}×`, color: avgRoas >= 3 ? C.accent : avgRoas >= 2 ? C.navyLight : C.rose },
+          { label: 'Kliknięcia', value: totals.clicks.toLocaleString('pl-PL'),      color: C.text   },
+          { label: 'Konwersje',  value: totals.conversions.toLocaleString('pl-PL'), color: C.accent },
         ].map(s => (
           <div key={s.label} className="card-lift" style={{ ...card, padding: '14px 16px' }}>
             <div style={{ fontSize: 10, color: C.text3, fontWeight: 700, letterSpacing: 0.8, textTransform: 'uppercase', marginBottom: 8 }}>{s.label}</div>
@@ -381,7 +403,7 @@ export default function Campaigns() {
         {/* ICP filter */}
         <div style={{ display: 'flex', gap: 5 }}>
           {(['ALL', 'high', 'core', 'outside'] as const).map(v => {
-            const labels = { ALL: 'Cały ICP', high: '🔴 High ICP', core: '🟠 Core ICP', outside: '⚪ Poza ICP' };
+            const labels = { ALL: 'Cały ICP', high: 'High ICP', core: 'Core ICP', outside: 'Poza ICP' };
             const active = filterIcp === v;
             return (
               <button key={v} onClick={() => setFilterIcp(v)} style={{
@@ -402,14 +424,16 @@ export default function Campaigns() {
             const lbl = f === 'ALL' ? 'Lejek: wszystkie' : FUNNEL_CFG[f].label;
             const active = filterFunnel === f;
             const col = f !== 'ALL' ? FUNNEL_CFG[f].color : C.text2;
+            const FIcon = f !== 'ALL' ? FUNNEL_CFG[f as FunnelStage].Icon : null;
             return (
               <button key={f} onClick={() => setFilterFunnel(f)} style={{
                 padding: '7px 12px', borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: 'pointer',
                 border: `1px solid ${active ? col : C.border}`,
                 background: active ? `${col}12` : '#fff',
                 color: active ? col : C.text2, transition: 'all .15s',
+                display: 'flex', alignItems: 'center', gap: 5,
               }}>
-                {f !== 'ALL' && <span style={{ marginRight: 4 }}>{FUNNEL_CFG[f as FunnelStage].icon}</span>}
+                {FIcon && <FIcon size={11} />}
                 {lbl}
               </button>
             );

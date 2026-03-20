@@ -9,7 +9,8 @@ import {
 import React from 'react';
 import {
   TrendingUp, TrendingDown, DollarSign, MousePointerClick,
-  Repeat2, Target, BarChart2, Search,
+  Repeat2, Target, BarChart2, Search, Wifi, ExternalLink,
+  FileText, ArrowUpRight, ArrowDownRight, Minus as MinusIcon,
 } from 'lucide-react';
 import DateRangePicker, { type DateRange } from '../components/DateRangePicker';
 
@@ -123,10 +124,23 @@ function StatCard({
 const LOOKER_EMBED = 'https://lookerstudio.google.com/embed/reporting/f22c02b3-5f8d-4292-bc22-1bc3bb640e73/page/p_4u92o69d3c';
 
 const REPORT_TABS = [
-  { id: 'ads',     label: 'Google Ads', desc: 'Analiza wydajności kampanii z Google Ads — trendy kosztów, ROAS, konwersje i podział wg ICP.' },
-  { id: 'looker',  label: 'Looker Studio', desc: 'Zewnętrzny raport Kadromierz z Looker Studio — pełny widok danych marketingowych i biznesowych.' },
+  { id: 'ads',     label: 'Google Ads',     desc: 'Analiza wydajności kampanii z Google Ads — trendy kosztów, ROAS, konwersje i podział wg ICP.' },
+  { id: 'blog',    label: 'Blog & Content', desc: 'Wydajność treści z kadromierz.pl/blog — ruch organiczny, pozycje SEO, współczynnik konwersji i top artykuły.' },
+  { id: 'looker',  label: 'Looker Studio',  desc: 'Zewnętrzny raport Kadromierz z Looker Studio — pełny widok danych marketingowych i biznesowych.' },
 ] as const;
 type ReportTab = typeof REPORT_TABS[number]['id'];
+
+// ─── Mock blog articles data ────────────────────────────────────────────────
+const BLOG_ARTICLES = [
+  { title: 'Program do grafiku pracy w hotelu', url: '/blog/program-grafik-hotel', sessions: 4820, goal: 'Gastronomia', position: 2.1, clicks: 612, ctr: 12.7, conv: 38, delta: 14 },
+  { title: 'Ewidencja czasu pracy kierowcy', url: '/blog/ewidencja-czasu-pracy-kierowcy', sessions: 3640, goal: 'Logistyka', position: 4.3, clicks: 441, ctr: 8.2, conv: 21, delta: -5 },
+  { title: 'Jak zrobić grafik dla pracowników', url: '/blog/jak-zrobic-grafik', sessions: 6210, goal: 'Generic', position: 1.8, clicks: 890, ctr: 14.3, conv: 55, delta: 22 },
+  { title: 'Planowanie pracy zmianowej — poradnik', url: '/blog/praca-zmianowa', sessions: 2180, goal: 'Produkcja', position: 6.5, clicks: 198, ctr: 5.1, conv: 12, delta: 8 },
+  { title: 'Urlopy i nieobecności — jak liczyć', url: '/blog/urlopy-nieobecnosci', sessions: 1890, goal: 'Generic', position: 9.2, clicks: 145, ctr: 3.8, conv: 8, delta: -2 },
+  { title: 'Kontrola PIP 2025 — jak się przygotować', url: '/blog/kontrola-pip', sessions: 3410, goal: 'Generic', position: 3.1, clicks: 487, ctr: 11.2, conv: 29, delta: 31 },
+  { title: 'Grafik pracy restauracji — przykład', url: '/blog/grafik-restauracja', sessions: 2760, goal: 'Gastronomia', position: 5.4, clicks: 312, ctr: 7.4, conv: 19, delta: 6 },
+  { title: 'Aplikacja do planowania zmian — ranking', url: '/blog/aplikacja-zmiany', sessions: 1540, goal: 'Generic', position: 11.3, clicks: 98, ctr: 3.2, conv: 6, delta: -8 },
+];
 
 export default function Reports() {
   const [activeTab, setActiveTab] = useState<ReportTab>('ads');
@@ -231,7 +245,21 @@ export default function Reports() {
             </p>
           </div>
         </div>
-        {activeTab === 'ads' && <DateRangePicker value={dateRange} onChange={setDateRange} />}
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+          {activeTab === 'ads' && <DateRangePicker value={dateRange} onChange={setDateRange} />}
+          <button className="btn-cta" style={{
+            display: 'flex', alignItems: 'center', gap: 7,
+            padding: '9px 16px', borderRadius: 10,
+            background: 'linear-gradient(135deg,#0F172A,#1E293B)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            color: '#fff', cursor: 'pointer', fontSize: 12.5, fontWeight: 700,
+            boxShadow: '0 4px 14px rgba(0,0,0,0.20)',
+            fontFamily: 'Inter, sans-serif',
+          }}>
+            <Wifi size={13} />
+            Połącz Google Ads API
+          </button>
+        </div>
       </div>
 
       {/* ── Tab bar ─────────────────────────────────────────────── */}
@@ -264,6 +292,123 @@ export default function Reports() {
             allowFullScreen
             title="Looker Studio — Kadromierz"
           />
+        </div>
+      )}
+
+      {/* ── Blog & Content tab ──────────────────────────────────── */}
+      {activeTab === 'blog' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          {/* Summary strip */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+            {[
+              { label: 'Sesje organiczne',  value: '26 450',  delta: +18, unit: '/mies.' },
+              { label: 'Kliknięcia (GSC)',  value: '3 183',   delta: +11, unit: '/mies.' },
+              { label: 'Śr. pozycja',       value: '5.4',     delta: -1.2, unit: 'poz.' },
+              { label: 'Konwersje z bloga', value: '188',     delta: +24, unit: '/mies.' },
+            ].map(s => (
+              <div key={s.label} className="card-lift" style={{ ...card, padding: '14px 18px' }}>
+                <div style={{ fontSize: 10, fontWeight: 700, color: C.text3, textTransform: 'uppercase', letterSpacing: 0.7, marginBottom: 8 }}>{s.label}</div>
+                <div style={{ fontSize: 22, fontWeight: 800, color: C.text }}>
+                  {s.value}
+                  <span style={{ fontSize: 11, color: C.text3, marginLeft: 4, fontWeight: 400 }}>{s.unit}</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 8 }}>
+                  {s.delta > 0
+                    ? <ArrowUpRight size={12} color={C.accent} />
+                    : s.delta < 0
+                    ? <ArrowDownRight size={12} color={C.rose} />
+                    : <MinusIcon size={12} color={C.text3} />
+                  }
+                  <span style={{ fontSize: 11, fontWeight: 700, color: s.delta > 0 ? C.accent : s.delta < 0 ? C.rose : C.text3 }}>
+                    {s.delta > 0 ? '+' : ''}{s.delta}% vs poprzedni miesiąc
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Article performance table */}
+          <div style={{ ...card, overflow: 'hidden' }}>
+            <div style={{ padding: '16px 20px', borderBottom: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', gap: 10 }}>
+              <FileText size={16} color={C.accent} />
+              <div>
+                <div style={{ fontWeight: 700, fontSize: 14, color: C.text }}>Top artykuły — kadromierz.pl/blog</div>
+                <div style={{ fontSize: 11.5, color: C.text3, marginTop: 2 }}>Dane z Google Search Console · ostatnie 30 dni</div>
+              </div>
+              <a href="https://kadromierz.pl/blog" target="_blank" rel="noreferrer"
+                style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: C.accent, fontWeight: 600 }}>
+                Otwórz blog <ExternalLink size={12} />
+              </a>
+            </div>
+            <div style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr style={{ background: C.c2, borderBottom: `1px solid ${C.border}` }}>
+                    {['Artykuł', 'Segment', 'Sesje', 'Kliknięcia GSC', 'CTR', 'Śr. pozycja', 'Konwersje', 'Trend'].map(h => (
+                      <th key={h} style={{ padding: '9px 14px', textAlign: 'left', fontSize: 10, fontWeight: 700, color: C.text3, textTransform: 'uppercase', letterSpacing: 0.7, whiteSpace: 'nowrap' }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {BLOG_ARTICLES.map(a => (
+                    <tr key={a.url} className="tr-hover">
+                      <td style={{ padding: '12px 14px', borderBottom: `1px solid ${C.border}` }}>
+                        <div style={{ fontSize: 12.5, fontWeight: 600, color: C.text, maxWidth: 280, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{a.title}</div>
+                        <div style={{ fontSize: 10, color: C.text3, marginTop: 2 }}>kadromierz.pl{a.url}</div>
+                      </td>
+                      <td style={{ padding: '12px 14px', borderBottom: `1px solid ${C.border}` }}>
+                        <span style={{ fontSize: 10.5, fontWeight: 700, padding: '2px 8px', borderRadius: 99, background: C.accentBg, color: C.accent, border: `1px solid ${C.accentBg2}` }}>
+                          {a.goal}
+                        </span>
+                      </td>
+                      <td style={{ padding: '12px 14px', borderBottom: `1px solid ${C.border}`, fontSize: 13, fontWeight: 700, color: C.text }}>{a.sessions.toLocaleString('pl-PL')}</td>
+                      <td style={{ padding: '12px 14px', borderBottom: `1px solid ${C.border}`, fontSize: 13, color: C.text2 }}>{a.clicks}</td>
+                      <td style={{ padding: '12px 14px', borderBottom: `1px solid ${C.border}`, fontSize: 13, color: C.text2 }}>{a.ctr}%</td>
+                      <td style={{ padding: '12px 14px', borderBottom: `1px solid ${C.border}` }}>
+                        <span style={{ fontSize: 13, fontWeight: 700, color: a.position <= 3 ? C.accent : a.position <= 7 ? C.orange : C.rose }}>
+                          {a.position.toFixed(1)}
+                        </span>
+                      </td>
+                      <td style={{ padding: '12px 14px', borderBottom: `1px solid ${C.border}`, fontSize: 13, fontWeight: 700, color: C.green }}>{a.conv}</td>
+                      <td style={{ padding: '12px 14px', borderBottom: `1px solid ${C.border}` }}>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, fontSize: 11, fontWeight: 700,
+                          color: a.delta > 0 ? C.accent : a.delta < 0 ? C.rose : C.text3 }}>
+                          {a.delta > 0 ? <ArrowUpRight size={11} /> : a.delta < 0 ? <ArrowDownRight size={11} /> : <MinusIcon size={11} />}
+                          {a.delta > 0 ? '+' : ''}{a.delta}%
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Connect GSC CTA */}
+          <div style={{
+            ...card, padding: '20px 24px',
+            background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)',
+            border: '1px solid rgba(5,150,105,0.18)',
+            display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
+          }}>
+            <div style={{ width: 44, height: 44, borderRadius: 12, background: 'linear-gradient(135deg,#34D399,#059669)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Wifi size={20} color="#fff" />
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 14, fontWeight: 700, color: '#064E3B' }}>Połącz Google Search Console</div>
+              <div style={{ fontSize: 12, color: '#065F46', marginTop: 3 }}>
+                Podłącz konto GSC aby zobaczyć rzeczywiste dane z wyszukiwarki zamiast danych demo.
+              </div>
+            </div>
+            <button className="btn-cta" style={{
+              padding: '9px 18px', borderRadius: 9, background: 'linear-gradient(135deg,#059669,#047857)',
+              border: 'none', color: '#fff', fontSize: 13, fontWeight: 700, cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0,
+              boxShadow: '0 4px 14px rgba(5,150,105,0.30)', fontFamily: 'Inter, sans-serif',
+            }}>
+              <ExternalLink size={13} /> Połącz GSC
+            </button>
+          </div>
         </div>
       )}
 
