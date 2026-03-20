@@ -297,9 +297,9 @@ export default function Dashboard({ onPage }: Props) {
     { urgency: 'normal' as const, campaign: 'Retargeting – Display',  action: 'CTR spada od 4 tygodni (–14%). Odśwież banery i zawęź listę remarketingową. Segment ICP: Retail (Fit Score 90).', cta: 'Analizuj',    page: 'insights' as Page },
   ];
   const urgCfg = {
-    hot:    { color: C.rose,   bg: C.roseBg,   bdr: C.roseBdr,   label: 'Pilne'  },
-    warm:   { color: C.orange, bg: C.orangeBg, bdr: C.orangeBdr, label: 'Ważne'  },
-    normal: { color: C.navy,   bg: C.navyBg,   bdr: 'rgba(11,74,111,0.18)', label: 'Info' },
+    hot:    { color: '#EF4444', accent: '#FEF2F2', label: 'Pilne'  },
+    warm:   { color: '#F97316', accent: '#FFF7ED', label: 'Ważne'  },
+    normal: { color: '#64748B', accent: '#F8FAFC', label: 'Info'   },
   };
 
   const highFatigue = MOCK_CAMPAIGNS.filter(c => c.fatigueScore >= 60 && c.status === 'ENABLED');
@@ -444,16 +444,18 @@ export default function Dashboard({ onPage }: Props) {
                   const uc = urgCfg[p.urgency];
                   return (
                     <div key={i} style={{
-                      background: uc.bg, borderRadius: 11, padding: '12px 14px',
-                      border: `1px solid ${uc.bdr}`, borderLeft: `3px solid ${uc.color}`,
+                      background: '#fff', borderRadius: 11, padding: '11px 14px',
+                      border: `1px solid ${C.border}`,
+                      borderLeft: `3px solid ${uc.color}`,
                       display: 'flex', alignItems: 'center', gap: 12,
+                      boxShadow: S.card,
                     }}>
                       <div style={{ flex: 1 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 3, flexWrap: 'wrap' }}>
                           <span style={{
-                            fontSize: 9, fontWeight: 800, padding: '2px 6px', borderRadius: 5,
-                            background: `${uc.color}18`, color: uc.color,
-                            textTransform: 'uppercase', letterSpacing: 0.7,
+                            fontSize: 9, fontWeight: 800, padding: '2px 7px', borderRadius: 99,
+                            background: uc.accent, color: uc.color,
+                            textTransform: 'uppercase', letterSpacing: 0.7, border: `1px solid ${uc.color}22`,
                           }}>{uc.label}</span>
                           <span style={{ fontWeight: 700, fontSize: 12.5, color: C.text }}>{p.campaign}</span>
                         </div>
