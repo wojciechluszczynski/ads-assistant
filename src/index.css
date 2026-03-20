@@ -1,131 +1,287 @@
-*, *::before, *::after { box-sizing: border-box; }
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── Ambient page background ── */
+/* ── Base ── */
 body {
-  margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #F8FAFC;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #F1F5F9;
   min-height: 100vh;
   color: #0F172A;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
 }
 
-/* Ambient light blobs */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 900px 700px at -8% -12%, rgba(249,115,22,0.07) 0%, transparent 55%),
-    radial-gradient(ellipse 700px 600px at 108% 108%, rgba(14,165,233,0.06) 0%, transparent 55%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Subtle dot grid */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: radial-gradient(rgba(15,23,42,0.055) 1px, transparent 1px);
-  background-size: 28px 28px;
-  pointer-events: none;
-  z-index: 0;
-}
-
-#root { position: relative; z-index: 1; }
+#root { min-height: 100vh; display: flex; }
 
 /* ── Scrollbar ── */
-::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
 
 /* ── Base resets ── */
-input, textarea, button { font-family: inherit; }
+input, textarea, button, select { font-family: inherit; }
 a { color: inherit; text-decoration: none; }
 
 /* ── Focus ring (WCAG AA) ── */
 :focus-visible {
   outline: 2px solid #F97316;
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
-/* ── Card hover lift ── */
+/* ═══════════════════════════════════════════════════════════
+   LAYOUT — Sidebar + Main
+═══════════════════════════════════════════════════════════ */
+
+.sidebar-desktop { display: flex; }
+.sidebar-mobile  { display: none !important; }
+
+@media (max-width: 768px) {
+  .sidebar-desktop { display: none !important; }
+  .sidebar-mobile  { display: flex !important; }
+  .main-content    { padding-top: 56px !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PAGE CONTAINER
+═══════════════════════════════════════════════════════════ */
+
+.page-container {
+  padding: 36px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1200px) {
+  .page-container { padding: 28px 28px; }
+}
+@media (max-width: 640px) {
+  .page-container { padding: 20px 16px; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CARD SYSTEM
+═══════════════════════════════════════════════════════════ */
+
+/* Base card */
+.card {
+  background: #FFFFFF;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+}
+
+/* Hover lift */
 .card-lift {
   transition: transform 0.20s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.20s ease;
   will-change: transform;
+  cursor: default;
 }
 .card-lift:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.06), 0 8px 30px rgba(0,0,0,0.10) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.07), 0 8px 28px rgba(0,0,0,0.10) !important;
 }
 
-/* ── Primary CTA button ── */
+/* Inset card (for nested sections) */
+.card-inset {
+  background: #F8FAFC;
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 10px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════════════════════════ */
+
+/* Primary CTA */
 .btn-cta {
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.14s ease, box-shadow 0.14s ease, filter 0.14s ease;
 }
 .btn-cta:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 24px rgba(249,115,22,0.40) !important;
+  box-shadow: 0 8px 28px rgba(249,115,22,0.42) !important;
+  filter: brightness(1.05);
 }
-.btn-cta:active {
-  transform: scale(0.97);
-}
+.btn-cta:active { transform: scale(0.97); }
 
-/* ── Secondary button ── */
+/* Secondary ghost */
 .btn-secondary {
-  transition: all 0.15s ease;
+  transition: all 0.14s ease;
 }
 .btn-secondary:hover {
-  border-color: rgba(249,115,22,0.40) !important;
+  border-color: rgba(249,115,22,0.35) !important;
   color: #F97316 !important;
   background: rgba(249,115,22,0.05) !important;
 }
 
-/* ── Table row hover ── */
-.tr-hover:hover td {
-  background: #F8FAFC;
+/* Ghost neutral */
+.btn-ghost {
+  transition: all 0.14s ease;
+}
+.btn-ghost:hover {
+  background: rgba(0,0,0,0.05) !important;
+  color: #0F172A !important;
 }
 
-/* ── Sparkline container ── */
-.sparkline { display: inline-block; vertical-align: middle; }
+/* ═══════════════════════════════════════════════════════════
+   TABLE
+═══════════════════════════════════════════════════════════ */
 
-/* ── Fade-in animation ── */
+.tr-hover:hover td {
+  background: rgba(249,115,22,0.03) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TYPOGRAPHY UTILITIES
+═══════════════════════════════════════════════════════════ */
+
+.heading-xl {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+  line-height: 1.15;
+  color: #0F172A;
+}
+.heading-lg {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  color: #0F172A;
+}
+.heading-md {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.3;
+  color: #0F172A;
+}
+.metric-display {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1;
+  color: #0F172A;
+}
+.label-caps {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+  color: #94A3B8;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BADGES / CHIPS
+═══════════════════════════════════════════════════════════ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 700;
+  border-width: 1px;
+  border-style: solid;
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════════════════════ */
+
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.fade-up { animation: fadeUp 0.3s ease both; }
+.fade-up { animation: fadeUp 0.35s cubic-bezier(0.22,1,0.36,1) both; }
 
-/* ── Spin ── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.fade-in { animation: fadeIn 0.25s ease both; }
+
 @keyframes spin {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
-.spin { animation: spin 1s linear infinite; }
+.spin { animation: spin 0.8s linear infinite; }
 
-/* ── Pulse dot ── */
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.4; }
 }
-.pulse-dot { animation: pulse 2s ease-in-out infinite; }
+.pulse-dot { animation: pulse 2.2s ease-in-out infinite; }
 
-/* ── Nav responsive ── */
-.nav-mobile { display: none !important; }
-@media (max-width: 768px) {
-  .nav-desktop { display: none !important; }
-  .nav-mobile  { display: flex !important; }
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
+.slide-down { animation: slideDown 0.20s cubic-bezier(0.22,1,0.36,1) both; }
 
-/* ── Responsive grid ── */
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE GRID HELPERS
+═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .grid-sidebar { grid-template-columns: 1fr !important; }
+}
 @media (max-width: 900px) {
   .grid-2col { grid-template-columns: 1fr !important; }
 }
 @media (max-width: 640px) {
   .grid-3col { grid-template-columns: 1fr 1fr !important; }
   .grid-4col { grid-template-columns: 1fr 1fr !important; }
+  .grid-stat  { grid-template-columns: 1fr 1fr !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PAGE-SPECIFIC HELPERS
+═══════════════════════════════════════════════════════════ */
+
+/* Subtle dot grid overlay on main */
+.main-content::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(rgba(15,23,42,0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Sparkline container ── */
+.sparkline { display: inline-block; vertical-align: middle; }
+
+/* ── Thin divider ── */
+.divider {
+  height: 1px;
+  background: rgba(0,0,0,0.06);
+  margin: 0;
+}
+
+/* ── Sticky header (for tables) ── */
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 14px;
+}
+
+/* ── Context banner ── */
+.context-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  background: rgba(11,74,111,0.06);
+  border: 1px solid rgba(11,74,111,0.12);
+  border-radius: 10px;
+  font-size: 12.5px;
+  color: #0B4A6F;
+  line-height: 1.6;
 }

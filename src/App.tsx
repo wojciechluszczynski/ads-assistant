@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import TopNav from './components/TopNav';
+import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import Chat from './pages/Chat';
 import Campaigns from './pages/Campaigns';
@@ -11,15 +11,15 @@ import type { Page, Account } from './lib/types';
 import { MOCK_ACCOUNTS } from './lib/mockData';
 
 export default function App() {
-  const [authed, setAuthed] = useState(false);
-  const [page, setPage]     = useState<Page>('dashboard');
+  const [authed, setAuthed]             = useState(false);
+  const [page, setPage]                 = useState<Page>('dashboard');
   const [activeAccount, setActiveAccount] = useState<Account>(MOCK_ACCOUNTS[0]);
 
   if (!authed) return <Login onLogin={() => setAuthed(true)} />;
 
   return (
-    <div>
-      <TopNav
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#F1F5F9' }}>
+      <Sidebar
         page={page}
         onPage={setPage}
         accounts={MOCK_ACCOUNTS}
@@ -27,7 +27,7 @@ export default function App() {
         onAccount={setActiveAccount}
         demoMode={true}
       />
-      <main>
+      <main className="main-content" style={{ flex: 1, minWidth: 0, overflowY: 'auto', background: '#F1F5F9' }}>
         {page === 'dashboard' && <Dashboard onPage={setPage} />}
         {page === 'chat'      && <Chat />}
         {page === 'campaigns' && <Campaigns />}

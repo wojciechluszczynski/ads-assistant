@@ -135,11 +135,11 @@ export default function Insights({ onPage: _onPage }: Props) {
   };
 
   return (
-    <div style={{ padding: '28px 24px', maxWidth: 1320, margin: '0 auto' }} className="fade-up">
+    <div className="page-container fade-up">
 
       {/* Page header */}
       <div style={{ marginBottom: 32 }}>
-        <h1 style={{ fontSize: 26, fontWeight: 800, color: C.text, margin: 0, letterSpacing: -0.5 }}>
+        <h1 style={{ fontSize: 28, fontWeight: 800, color: C.text, margin: 0, letterSpacing: -0.7 }}>
           Analizy i rekomendacje
         </h1>
         <p style={{ color: C.text3, fontSize: 14, margin: '4px 0 0' }}>

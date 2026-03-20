@@ -199,7 +199,7 @@ export default function Chat() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 60px)', maxWidth: 820, margin: '0 auto', padding: '0 20px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', maxWidth: 820, margin: '0 auto', padding: '0 24px' }}>
 
       {/* Header */}
       <div style={{ padding: '16px 0 12px', borderBottom: `1px solid ${C.border}`, flexShrink: 0 }}>

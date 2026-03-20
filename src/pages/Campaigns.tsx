@@ -297,12 +297,12 @@ export default function Campaigns() {
   ];
 
   return (
-    <div style={{ padding: '28px 24px', maxWidth: 1500, margin: '0 auto' }} className="fade-up">
+    <div className="page-container fade-up">
 
       {/* ── Header ─────────────────────────────────────────── */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
         <div>
-          <h1 style={{ fontSize: 24, fontWeight: 800, color: C.text, margin: 0, letterSpacing: -0.4 }}>Kampanie</h1>
+          <h1 style={{ fontSize: 28, fontWeight: 800, color: C.text, margin: 0, letterSpacing: -0.7 }}>Kampanie</h1>
           <p style={{ color: C.text3, fontSize: 13, margin: '3px 0 0' }}>
             {filtered.length} kampanii · ostatnie 30 dni · kolumna ICP z dokumentu „ICP Source of Truth"
           </p>
@@ -430,7 +430,7 @@ export default function Campaigns() {
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ background: C.subtle, borderBottom: `1px solid ${C.border}` }}>
+              <tr style={{ background: C.c2, borderBottom: `1px solid ${C.border}` }}>
                 {TABLE_HEADERS.map(h => (
                   <th key={h.label} style={{
                     padding: '10px 12px', textAlign: 'left', fontSize: 10, fontWeight: 700,

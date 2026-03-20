@@ -127,9 +127,9 @@ export default function Settings() {
   }
 
   return (
-    <div style={{ padding: '24px 20px', maxWidth: 900, margin: '0 auto' }}>
+    <div className="page-container fade-up" style={{ maxWidth: 900 }}>
       <div style={{ marginBottom: 28 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 800, color: C.text, margin: 0, fontFamily: 'Inter, sans-serif' }}>Ustawienia</h1>
+        <h1 style={{ fontSize: 28, fontWeight: 800, color: C.text, margin: 0, letterSpacing: -0.7 }}>Ustawienia</h1>
         <p style={{ color: C.text3, fontSize: 13, margin: '4px 0 0' }}>Konfiguracja połączeń z Google Ads API i Claude</p>
       </div>
 
@@ -204,7 +204,7 @@ export default function Settings() {
           {SETTINGS.map(s => (
             <div key={s.key} style={{
               padding: '14px 16px', borderRadius: 10,
-              background: C.subtle, border: `1px solid ${C.border}`,
+              background: C.c2, border: `1px solid ${C.border}`,
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
