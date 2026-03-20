@@ -146,124 +146,126 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
 
       {/* ── Right form panel ──────────────────────────────────────────── */}
       <div className="login-right" style={{
-        background: '#F8FAFC',
+        background: 'linear-gradient(145deg, #1E293B 0%, #0F172A 100%)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         padding: '48px 40px',
         position: 'relative',
+        overflow: 'hidden',
       }}>
-        {/* Subtle dot grid */}
+        {/* Same dot grid as left panel */}
         <div style={{
           position: 'absolute', inset: 0, pointerEvents: 'none',
-          backgroundImage: 'radial-gradient(rgba(15,23,42,0.04) 1px, transparent 1px)',
-          backgroundSize: '24px 24px',
+          backgroundImage: 'radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px)',
+          backgroundSize: '32px 32px',
+        }} />
+        {/* Subtle glow */}
+        <div style={{
+          position: 'absolute', top: '30%', left: '50%', transform: 'translateX(-50%)',
+          width: 340, height: 340, borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(249,115,22,0.06) 0%, transparent 65%)',
+          pointerEvents: 'none',
         }} />
 
-        <div className="fade-up" style={{ width: '100%', maxWidth: 360, position: 'relative', zIndex: 1 }}>
-          {/* Form card */}
-          <div style={{
-            background: '#FFFFFF',
-            border: '1px solid #E2E8F0',
-            borderRadius: 18,
-            padding: '32px 30px 28px',
-            boxShadow: '0 4px 28px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04)',
-          }}>
-            <div style={{ marginBottom: 26 }}>
-              <h2 style={{ fontSize: 20, fontWeight: 800, color: '#0F172A', letterSpacing: -0.5, margin: '0 0 5px' }}>
-                Zaloguj się
-              </h2>
-              <p style={{ fontSize: 13, color: '#94A3B8', margin: 0 }}>
-                Wpisz hasło, aby uzyskać dostęp.
-              </p>
-            </div>
+        <div className="fade-up" style={{ width: '100%', maxWidth: 340, position: 'relative', zIndex: 1 }}>
 
-            <form onSubmit={handleSubmit}>
-              <div style={{ marginBottom: 18 }}>
-                <label style={{
-                  fontSize: 11, fontWeight: 700, color: '#475569',
-                  letterSpacing: 0.7, display: 'block', marginBottom: 7,
-                  textTransform: 'uppercase',
-                }}>
-                  Hasło dostępu
-                </label>
-                <div style={{ position: 'relative' }}>
-                  <Lock size={14} style={{
-                    position: 'absolute', left: 13, top: '50%',
-                    transform: 'translateY(-50%)', color: '#94A3B8',
-                  }} />
-                  <input
-                    type={show ? 'text' : 'password'}
-                    value={password}
-                    onChange={e => { setPassword(e.target.value); setError(''); }}
-                    placeholder="Wpisz hasło…"
-                    autoFocus
-                    style={{
-                      width: '100%', padding: '12px 42px 12px 38px',
-                      background: '#F8FAFC',
-                      border: `1.5px solid ${error ? '#DC2626' : '#E2E8F0'}`,
-                      borderRadius: 10, color: '#0F172A', fontSize: 14,
-                      outline: 'none', transition: 'border-color .15s, box-shadow .15s',
-                      boxSizing: 'border-box', fontFamily: 'Inter, sans-serif',
-                    }}
-                    onFocus={e => {
-                      e.target.style.borderColor = '#F97316';
-                      e.target.style.boxShadow   = '0 0 0 3px rgba(249,115,22,0.12)';
-                      e.target.style.background   = '#fff';
-                    }}
-                    onBlur={e => {
-                      e.target.style.borderColor = error ? '#DC2626' : '#E2E8F0';
-                      e.target.style.boxShadow   = 'none';
-                      e.target.style.background   = '#F8FAFC';
-                    }}
-                  />
-                  <button type="button" onClick={() => setShow(v => !v)} style={{
-                    position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
-                    background: 'none', border: 'none', color: '#94A3B8',
-                    cursor: 'pointer', padding: 3, borderRadius: 4, display: 'flex',
-                  }}>
-                    {show ? <EyeOff size={14} /> : <Eye size={14} />}
-                  </button>
-                </div>
-                {error && (
-                  <p style={{ color: '#DC2626', fontSize: 12, margin: '6px 0 0', fontWeight: 500 }}>{error}</p>
-                )}
-              </div>
-
-              <button
-                type="submit"
-                disabled={!password}
-                className={password ? 'btn-cta' : ''}
-                style={{
-                  width: '100%', padding: '13px',
-                  background: password ? 'linear-gradient(135deg,#F97316,#EA580C)' : '#F1F5F9',
-                  border: 'none', borderRadius: 10,
-                  color: password ? '#fff' : '#94A3B8',
-                  fontSize: 14, fontWeight: 700,
-                  cursor: password ? 'pointer' : 'default',
-                  boxShadow: password ? '0 4px 18px rgba(249,115,22,0.30)' : 'none',
-                  transition: 'all .15s',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
-                  fontFamily: 'Inter, sans-serif',
-                }}
-              >
-                Zaloguj się <ArrowRight size={14} />
-              </button>
-            </form>
-          </div>
-
-          {/* Demo hint */}
-          <div style={{
-            marginTop: 14, padding: '11px 16px',
-            background: 'rgba(249,115,22,0.07)',
-            borderRadius: 10, border: '1px solid rgba(249,115,22,0.15)',
-          }}>
-            <p style={{ fontSize: 12, color: '#C2410C', margin: 0, lineHeight: 1.6 }}>
-              <strong>Tryb DEMO:</strong> wpisz dowolne hasło (min. 4 znaki).
+          {/* Heading */}
+          <div style={{ marginBottom: 32 }}>
+            <h2 style={{
+              fontSize: 26, fontWeight: 800, color: '#F8FAFC',
+              letterSpacing: -0.6, margin: '0 0 6px',
+            }}>
+              Zaloguj się
+            </h2>
+            <p style={{ fontSize: 13.5, color: '#64748B', margin: 0, fontWeight: 400 }}>
+              Wpisz hasło, aby uzyskać dostęp do konta demo.
             </p>
           </div>
 
-          <p style={{ textAlign: 'center', fontSize: 11, color: '#CBD5E1', marginTop: 20 }}>
+          <form onSubmit={handleSubmit}>
+            {/* Input */}
+            <div style={{ marginBottom: 14 }}>
+              <label style={{
+                fontSize: 12, fontWeight: 600, color: '#94A3B8',
+                display: 'block', marginBottom: 8,
+              }}>
+                Hasło
+              </label>
+              <div style={{ position: 'relative' }}>
+                <Lock size={14} style={{
+                  position: 'absolute', left: 14, top: '50%',
+                  transform: 'translateY(-50%)', color: '#475569',
+                  pointerEvents: 'none',
+                }} />
+                <input
+                  type={show ? 'text' : 'password'}
+                  value={password}
+                  onChange={e => { setPassword(e.target.value); setError(''); }}
+                  placeholder="min. 4 znaki"
+                  autoFocus
+                  style={{
+                    width: '100%', padding: '13px 42px 13px 40px',
+                    background: 'rgba(255,255,255,0.06)',
+                    border: `1.5px solid ${error ? '#EF4444' : 'rgba(255,255,255,0.10)'}`,
+                    borderRadius: 10, color: '#F1F5F9', fontSize: 14,
+                    outline: 'none', transition: 'border-color .15s, box-shadow .15s, background .15s',
+                    boxSizing: 'border-box', fontFamily: 'Inter, sans-serif',
+                  }}
+                  onFocus={e => {
+                    e.target.style.borderColor = '#F97316';
+                    e.target.style.boxShadow   = '0 0 0 3px rgba(249,115,22,0.14)';
+                    e.target.style.background   = 'rgba(255,255,255,0.09)';
+                  }}
+                  onBlur={e => {
+                    e.target.style.borderColor = error ? '#EF4444' : 'rgba(255,255,255,0.10)';
+                    e.target.style.boxShadow   = 'none';
+                    e.target.style.background   = 'rgba(255,255,255,0.06)';
+                  }}
+                />
+                <button type="button" onClick={() => setShow(v => !v)} style={{
+                  position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
+                  background: 'none', border: 'none', color: '#475569',
+                  cursor: 'pointer', padding: 3, borderRadius: 4, display: 'flex',
+                }}>
+                  {show ? <EyeOff size={14} /> : <Eye size={14} />}
+                </button>
+              </div>
+              {error && (
+                <p style={{ color: '#F87171', fontSize: 12, margin: '6px 0 0', fontWeight: 500 }}>{error}</p>
+              )}
+            </div>
+
+            {/* Submit */}
+            <button
+              type="submit"
+              className="btn-cta"
+              style={{
+                width: '100%', padding: '13px',
+                background: 'linear-gradient(135deg,#F97316,#EA580C)',
+                border: 'none', borderRadius: 10,
+                color: '#fff', fontSize: 14, fontWeight: 700,
+                cursor: 'pointer',
+                boxShadow: '0 4px 20px rgba(249,115,22,0.35)',
+                transition: 'all .15s',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
+                fontFamily: 'Inter, sans-serif',
+                marginTop: 4,
+              }}
+            >
+              Zaloguj się <ArrowRight size={14} />
+            </button>
+          </form>
+
+          {/* Demo hint — clean, no box */}
+          <p style={{
+            textAlign: 'center', fontSize: 12, color: '#475569',
+            marginTop: 20, lineHeight: 1.6,
+          }}>
+            Tryb demo — wpisz dowolne hasło (min. 4 znaki)
+          </p>
+
+          <p style={{ textAlign: 'center', fontSize: 11, color: '#1E293B', marginTop: 24 }}>
             Kadromierz · AI-Powered Google Ads Optimizer
           </p>
         </div>
