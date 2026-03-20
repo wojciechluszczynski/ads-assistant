@@ -1,10 +1,12 @@
-import type { Campaign, DailyMetric, Account, AccountSummary, KeywordData } from './types';
+import type { Campaign, DailyMetric, Account, AccountSummary, KeywordData, IcpSegmentData } from './types';
 
 export const MOCK_ACCOUNTS: Account[] = [
   { id: '1', name: 'Wojciech – osobiste', customerId: '123-456-7890', currency: 'PLN', timeZone: 'Europe/Warsaw' },
-  { id: '2', name: 'Kadromierz', customerId: '987-654-3210', currency: 'PLN', timeZone: 'Europe/Warsaw' },
+  { id: '2', name: 'Kadromierz',          customerId: '987-654-3210', currency: 'PLN', timeZone: 'Europe/Warsaw' },
 ];
 
+// ─── Campaigns — ICP data z pliku ICP Source of Truth ────────────────────────
+// Fit Score max 100 | Pain Score max 40 | High ICP ≥ 100 | Core ICP 70–99 | Outside < 70
 export const MOCK_CAMPAIGNS: Campaign[] = [
   {
     id: 'c1', name: 'Brand – Kadromierz [Search]', status: 'ENABLED', type: 'SEARCH',
@@ -18,6 +20,9 @@ export const MOCK_CAMPAIGNS: Campaign[] = [
     targetAudience: 'Retargeting + Podobni',
     weeklyImpressionsData: [6200, 6800, 7100, 7400, 6900, 7200, 6900],
     weeklyCtrData: [7.4, 7.6, 7.8, 8.0, 8.1, 7.9, 8.0],
+    icpSegment: 'Gastronomia',
+    icpFitScore: 115,
+    icpStatus: 'high',
   },
   {
     id: 'c2', name: 'Competitor – PMAX', status: 'ENABLED', type: 'PERFORMANCE_MAX',
@@ -31,6 +36,9 @@ export const MOCK_CAMPAIGNS: Campaign[] = [
     targetAudience: 'In-Market: HR Software',
     weeklyImpressionsData: [28000, 27200, 26400, 25800, 25200, 24900, 24600],
     weeklyCtrData: [3.4, 3.3, 3.2, 3.1, 3.0, 2.9, 2.8],
+    icpSegment: 'Hospitality',
+    icpFitScore: 82,
+    icpStatus: 'core',
   },
   {
     id: 'c3', name: 'HR Software – Generic [Search]', status: 'ENABLED', type: 'SEARCH',
@@ -44,6 +52,9 @@ export const MOCK_CAMPAIGNS: Campaign[] = [
     targetAudience: 'Broad Match – ogólna',
     weeklyImpressionsData: [16400, 15800, 15200, 14600, 13900, 13200, 12500],
     weeklyCtrData: [4.1, 3.8, 3.5, 3.3, 3.1, 2.8, 2.6],
+    icpSegment: 'Inne',
+    icpFitScore: 38,
+    icpStatus: 'outside',
   },
   {
     id: 'c4', name: 'Retargeting – Display', status: 'ENABLED', type: 'DISPLAY',
@@ -57,6 +68,9 @@ export const MOCK_CAMPAIGNS: Campaign[] = [
     targetAudience: 'Odwiedzający stronę (30d)',
     weeklyImpressionsData: [68000, 65000, 62000, 59000, 57000, 55000, 52000],
     weeklyCtrData: [0.28, 0.26, 0.24, 0.22, 0.21, 0.20, 0.18],
+    icpSegment: 'Retail',
+    icpFitScore: 90,
+    icpStatus: 'core',
   },
   {
     id: 'c5', name: 'YouTube – Awareness Q1', status: 'PAUSED', type: 'VIDEO',
@@ -70,6 +84,9 @@ export const MOCK_CAMPAIGNS: Campaign[] = [
     targetAudience: 'Similar to Customers + Interest: Business Software',
     weeklyImpressionsData: [5200, 4800, 4400, 3900, 3400, 2900, 2100],
     weeklyCtrData: [1.9, 1.6, 1.4, 1.2, 1.0, 0.8, 0.6],
+    icpSegment: 'Gastronomia',
+    icpFitScore: 78,
+    icpStatus: 'core',
   },
   {
     id: 'c6', name: 'Nowe funkcje – Remarketing', status: 'PAUSED', type: 'SEARCH',
@@ -80,13 +97,71 @@ export const MOCK_CAMPAIGNS: Campaign[] = [
     fatigueScore: 28,
     ctrTrend: +5.6,
     bidStrategy: 'Target ROAS',
-    targetAudience: 'Uzyt. aktywnych funkcji + Lista klientow',
+    targetAudience: 'Użytkownicy aktywnych funkcji + Lista klientów',
     weeklyImpressionsData: [1600, 1700, 1750, 1800, 1820, 1840, 1900],
     weeklyCtrData: [3.6, 3.7, 3.8, 3.9, 4.0, 4.1, 4.2],
+    icpSegment: 'Gastronomia',
+    icpFitScore: 120,
+    icpStatus: 'high',
   },
 ];
 
-// Last 30 days daily metrics
+// ─── ICP Segment breakdown — dane z ICP Source of Truth / Growth ICP ─────────
+// Łącznie: spend 28330 PLN | impressions 776200 | clicks 13692 | conversions 661
+// Segment udziały z dokumentu: Gastro 39%, Hospitality 14%, Retail 10%, etc.
+export const MOCK_ICP_SEGMENTS: IcpSegmentData[] = [
+  {
+    segment: 'Gastronomia', label: 'Gastronomia & Food Service', emoji: '🍔',
+    priority: 'P0', revenueShare: 39,
+    spend: 11200, impressions: 290000, clicks: 5100, conversions: 248, icpFitAvg: 104,
+    color: '#F97316',
+  },
+  {
+    segment: 'Hospitality', label: 'Hotelarstwo & Hospitality', emoji: '🏨',
+    priority: 'P1', revenueShare: 14,
+    spend: 5800, impressions: 148000, clicks: 2900, conversions: 124, icpFitAvg: 88,
+    color: '#0B4A6F',
+  },
+  {
+    segment: 'Retail', label: 'Handel detaliczny (Retail)', emoji: '🛒',
+    priority: 'P1', revenueShare: 10,
+    spend: 4900, impressions: 128000, clicks: 2100, conversions: 89, icpFitAvg: 79,
+    color: '#0EA5E9',
+  },
+  {
+    segment: 'Zdrowie', label: 'Ochrona zdrowia', emoji: '💊',
+    priority: 'P2', revenueShare: 8,
+    spend: 2400, impressions: 82000, clicks: 1100, conversions: 42, icpFitAvg: 65,
+    color: '#14B8A6',
+  },
+  {
+    segment: 'Wellness', label: 'Rozrywka, Sport & Wellness', emoji: '💇',
+    priority: 'P2', revenueShare: 8,
+    spend: 1900, impressions: 64000, clicks: 890, conversions: 31, icpFitAvg: 61,
+    color: '#F59E0B',
+  },
+  {
+    segment: 'Logistyka', label: 'Logistyka', emoji: '🚚',
+    priority: 'P2', revenueShare: 8,
+    spend: 1300, impressions: 38000, clicks: 580, conversions: 18, icpFitAvg: 55,
+    color: '#8B5CF6',
+  },
+  {
+    segment: 'Produkcja', label: 'Produkcja', emoji: '🏭',
+    priority: 'P2', revenueShare: 7,
+    spend: 900, impressions: 0, clicks: 0, conversions: 0, icpFitAvg: 50,
+    color: '#64748B',
+  },
+  {
+    segment: 'Inne', label: 'Inne (poza ICP)', emoji: '📞',
+    priority: 'out', revenueShare: 6,
+    spend: 830, impressions: 26200, clicks: 1022, conversions: 109, icpFitAvg: 28,
+    color: '#CBD5E1',
+  },
+];
+
+// ─── Daily metrics — 30 dni, z icpRatio ──────────────────────────────────────
+// icpRatio: jaki % kliknięć pochodzi z segmentów ICP (Gastro+Hospitality+Retail = ~63%)
 function genDailyMetrics(): DailyMetric[] {
   const metrics: DailyMetric[] = [];
   const now = new Date();
@@ -94,9 +169,11 @@ function genDailyMetrics(): DailyMetric[] {
     const d = new Date(now);
     d.setDate(d.getDate() - i);
     const dateStr = d.toISOString().split('T')[0];
-    const base = 900 + Math.sin(i * 0.4) * 200 + Math.random() * 300;
-    const cost = Math.round(base * 10) / 10;
+    const base = 900 + Math.sin(i * 0.4) * 200 + (Math.random() * 300 - 50);
+    const cost = Math.round(Math.max(600, base) * 10) / 10;
     const convValue = cost * (2.5 + Math.random() * 2);
+    // icpRatio rośnie w czasie — symbol poprawy targetowania
+    const icpRatio = Math.min(0.72, 0.52 + (29 - i) * 0.006 + (Math.random() * 0.06 - 0.03));
     metrics.push({
       date: dateStr,
       impressions: Math.round(12000 + Math.random() * 8000),
@@ -105,6 +182,7 @@ function genDailyMetrics(): DailyMetric[] {
       conversions: Math.round(18 + Math.random() * 22),
       conversionValue: Math.round(convValue * 10) / 10,
       roas: Math.round((convValue / cost) * 100) / 100,
+      icpRatio: Math.round(icpRatio * 100) / 100,
     });
   }
   return metrics;
@@ -125,15 +203,16 @@ export const MOCK_SUMMARY: AccountSummary = {
   pausedCampaigns: 2,
 };
 
+// ─── Keywords ────────────────────────────────────────────────────────────────
 export const MOCK_KEYWORDS: KeywordData[] = [
-  { phrase: 'system ewidencji czasu pracy',  impressions: 18420, clicks: 1104, ctr: 5.99, avgCpc: 1.42, cost: 1567, conversions: 89, convRate: 8.06, roas: 8.1,  quality: 'top'     },
-  { phrase: 'oprogramowanie HR dla firm',    impressions: 24800, clicks: 992,  ctr: 4.00, avgCpc: 2.18, cost: 2162, conversions: 71, convRate: 7.16, roas: 6.2,  quality: 'top'     },
-  { phrase: 'grafik pracowniczy online',     impressions: 31200, clicks: 936,  ctr: 3.00, avgCpc: 1.88, cost: 1760, conversions: 56, convRate: 5.98, roas: 5.7,  quality: 'good'    },
-  { phrase: 'kadry i place oprogramowanie',  impressions: 12800, clicks: 512,  ctr: 4.00, avgCpc: 2.54, cost: 1300, conversions: 38, convRate: 7.42, roas: 5.1,  quality: 'good'    },
-  { phrase: 'zarządzanie zmianami praca',    impressions: 42000, clicks: 840,  ctr: 2.00, avgCpc: 3.12, cost: 2621, conversions: 32, convRate: 3.81, roas: 3.2,  quality: 'average' },
-  { phrase: 'hr software',                   impressions: 88000, clicks: 1760, ctr: 2.00, avgCpc: 3.84, cost: 6759, conversions: 61, convRate: 3.47, roas: 2.1,  quality: 'average' },
-  { phrase: 'ewidencja pracownikow darmowa', impressions: 26400, clicks: 264,  ctr: 1.00, avgCpc: 4.22, cost: 1114, conversions: 8,  convRate: 3.03, roas: 1.8,  quality: 'poor'    },
-  { phrase: 'program kadrowy',               impressions: 19800, clicks: 594,  ctr: 3.00, avgCpc: 4.51, cost: 2679, conversions: 14, convRate: 2.36, roas: 1.4,  quality: 'poor'    },
-  { phrase: 'lista obecnosci excel',         impressions: 52000, clicks: 520,  ctr: 1.00, avgCpc: 2.80, cost: 1456, conversions: 6,  convRate: 1.15, roas: 1.2,  quality: 'poor'    },
-  { phrase: 'czas pracy ustawa',             impressions: 68000, clicks: 340,  ctr: 0.50, avgCpc: 1.20, cost: 408,  conversions: 2,  convRate: 0.59, roas: 0.7,  quality: 'poor'    },
+  { phrase: 'system ewidencji czasu pracy',    impressions: 18420, clicks: 1104, ctr: 5.99, avgCpc: 1.42, cost: 1567, conversions: 89, convRate: 8.06, roas: 8.1, quality: 'top'     },
+  { phrase: 'oprogramowanie HR dla firm',      impressions: 24800, clicks: 992,  ctr: 4.00, avgCpc: 2.18, cost: 2162, conversions: 71, convRate: 7.16, roas: 6.2, quality: 'top'     },
+  { phrase: 'grafik pracowniczy online',       impressions: 31200, clicks: 936,  ctr: 3.00, avgCpc: 1.88, cost: 1760, conversions: 56, convRate: 5.98, roas: 5.7, quality: 'good'    },
+  { phrase: 'kadry i płace oprogramowanie',    impressions: 12800, clicks: 512,  ctr: 4.00, avgCpc: 2.54, cost: 1300, conversions: 38, convRate: 7.42, roas: 5.1, quality: 'good'    },
+  { phrase: 'zarządzanie zmianami praca',      impressions: 42000, clicks: 840,  ctr: 2.00, avgCpc: 3.12, cost: 2621, conversions: 32, convRate: 3.81, roas: 3.2, quality: 'average' },
+  { phrase: 'hr software',                     impressions: 88000, clicks: 1760, ctr: 2.00, avgCpc: 3.84, cost: 6759, conversions: 61, convRate: 3.47, roas: 2.1, quality: 'average' },
+  { phrase: 'ewidencja pracowników darmowa',   impressions: 26400, clicks: 264,  ctr: 1.00, avgCpc: 4.22, cost: 1114, conversions: 8,  convRate: 3.03, roas: 1.8, quality: 'poor'    },
+  { phrase: 'program kadrowy',                 impressions: 19800, clicks: 594,  ctr: 3.00, avgCpc: 4.51, cost: 2679, conversions: 14, convRate: 2.36, roas: 1.4, quality: 'poor'    },
+  { phrase: 'lista obecności excel',           impressions: 52000, clicks: 520,  ctr: 1.00, avgCpc: 2.80, cost: 1456, conversions: 6,  convRate: 1.15, roas: 1.2, quality: 'poor'    },
+  { phrase: 'czas pracy ustawa',               impressions: 68000, clicks: 340,  ctr: 0.50, avgCpc: 1.20, cost: 408,  conversions: 2,  convRate: 0.59, roas: 0.7, quality: 'poor'    },
 ];

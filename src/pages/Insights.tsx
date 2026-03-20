@@ -10,9 +10,9 @@ import type { Page, FunnelStage } from '../lib/types';
 interface Props { onPage: (p: Page) => void; }
 
 const FUNNEL_STAGES: { id: FunnelStage; label: string; desc: string; icon: string; color: string; bg: string }[] = [
-  { id: 'awareness',     label: 'Swiadomosc',  desc: 'Dotarcie do nowych uzytkownikow', icon: '👁', color: '#0284C7', bg: 'rgba(14,165,233,0.08)'  },
-  { id: 'consideration', label: 'Rozwazanie',  desc: 'Zainteresowanie oferta',           icon: '🤔', color: '#7C3AED', bg: 'rgba(124,58,237,0.08)' },
-  { id: 'conversion',    label: 'Konwersja',   desc: 'Zakup / rejestracja / kontakt',    icon: '🎯', color: '#059669', bg: 'rgba(5,150,105,0.08)'  },
+  { id: 'awareness',     label: 'Świadomość', desc: 'Dotarcie do nowych użytkowników',  icon: '👁', color: '#0284C7', bg: 'rgba(14,165,233,0.08)'  },
+  { id: 'consideration', label: 'Rozważanie', desc: 'Zainteresowanie ofertą',            icon: '🤔', color: '#7C3AED', bg: 'rgba(124,58,237,0.08)' },
+  { id: 'conversion',    label: 'Konwersja',  desc: 'Zakup / rejestracja / kontakt',     icon: '🎯', color: '#059669', bg: 'rgba(5,150,105,0.08)'  },
 ];
 
 const tooltipStyle = {
@@ -74,7 +74,7 @@ export default function Insights({ onPage: _onPage }: Props) {
       current: 'Target CPA',
       suggested: 'Target ROAS (5.0x)',
       impact: '+15% konwersji',
-      reason: 'Stabilny ROAS 5.81x przez 30 dni — kampania dojrzala do auto-bidding na ROAS.',
+      reason: 'Stabilny ROAS 5.81x przez 30 dni — kampania dojrzała do auto-bidding na ROAS.',
       priority: 'high' as const,
     },
     {
@@ -82,23 +82,23 @@ export default function Insights({ onPage: _onPage }: Props) {
       current: 'Manual CPC',
       suggested: 'Enhanced CPC lub pauza',
       impact: '-30% CPA',
-      reason: 'ROAS 1.93x ponizej progu. Manual CPC nie optymalizuje konwersji — wlacz Enhanced CPC lub zmien bidding strategy.',
+      reason: 'ROAS 1.93x poniżej progu. Manual CPC nie optymalizuje konwersji — włącz Enhanced CPC lub zmień strategię licytowania.',
       priority: 'urgent' as const,
     },
     {
       campaign: 'Competitor – PMAX',
       current: 'Maximize Conversions',
       suggested: 'Target CPA (docelowy: 68 PLN)',
-      impact: 'Stable ROAS',
-      reason: 'Budzetprzekraczany o 14:00. Ustaw docelowy CPA zeby kontrolowac koszty i stabilizowac ROAS.',
+      impact: 'Stabilny ROAS',
+      reason: 'Budżet wyczerpywany o 14:00. Ustaw docelowy CPA żeby kontrolować koszty i stabilizować ROAS.',
       priority: 'medium' as const,
     },
     {
       campaign: 'Retargeting – Display',
       current: 'Target CPA',
-      suggested: 'Zmniejsz czestotliwosc wyswietlan',
-      impact: 'Obniz fatigue',
-      reason: 'Wysoka czestotliwosc (4.2x) przy spadajacym CTR. Ustaw cap 2 wyswietlenia/tydzien na uzytkownika.',
+      suggested: 'Zmniejsz częstotliwość wyświetleń',
+      impact: 'Obniż zmęczenie',
+      reason: 'Wysoka częstotliwość (4.2x) przy spadającym CTR. Ustaw cap 2 wyświetlenia/tydzień na użytkownika.',
       priority: 'medium' as const,
     },
   ];
@@ -108,30 +108,30 @@ export default function Insights({ onPage: _onPage }: Props) {
     {
       campaign: 'Competitor – PMAX',
       action: 'Wykluczenie',
-      segment: 'Uzyt. 7+ wyswietlen, 0 konwersji',
-      impact: 'Obniz CPA ~20%',
-      description: 'Zbyt wysoka czestotliwosc bez konwersji — wyklucz te osoby lub zmien komunikat.',
+      segment: 'Użyt. 7+ wyświetleń, 0 konwersji',
+      impact: 'Obniż CPA ~20%',
+      description: 'Zbyt wysoka częstotliwość bez konwersji — wyklucz te osoby lub zmień komunikat.',
     },
     {
       campaign: 'HR Software – Generic [Search]',
-      action: 'Zawezenie',
+      action: 'Zawężenie',
       segment: 'In-Market: HR Software (konkretna)',
       impact: 'ROAS +0.8x',
-      description: 'Broad match targetuje zbyt szerokie frazy. Zawez do In-Market HR + zawez dopasowanie slow kluczowych.',
+      description: 'Broad match targetuje zbyt szerokie frazy. Zawęź do In-Market HR + zmień dopasowanie słów kluczowych.',
     },
     {
       campaign: 'Brand – Kadromierz [Search]',
       action: 'Rozszerzenie',
-      segment: 'Similar Audiences do konwertujacych',
-      impact: '+25% zasieg',
-      description: 'Kampania Brand ma doskonaly ROAS — warto dodac Similar Audiences do zwiekszen wolumenu.',
+      segment: 'Similar Audiences do konwertujących',
+      impact: '+25% zasięg',
+      description: 'Kampania Brand ma doskonały ROAS — warto dodać Similar Audiences do zwiększenia wolumenu.',
     },
   ];
 
   const priorityColors = {
     urgent: { color: C.rose,   bg: C.roseBg,   bdr: C.roseBdr,   label: 'Pilne'   },
-    high:   { color: C.accent, bg: C.accentBg, bdr: C.greenBdr,  label: 'Wazne'   },
-    medium: { color: C.navy,   bg: C.navyBg,   bdr: 'rgba(11,74,111,0.22)', label: 'Srednie' },
+    high:   { color: C.accent, bg: C.accentBg, bdr: C.greenBdr,  label: 'Ważne'   },
+    medium: { color: C.navy,   bg: C.navyBg,   bdr: 'rgba(11,74,111,0.22)', label: 'Średnie' },
   };
 
   return (
@@ -143,13 +143,28 @@ export default function Insights({ onPage: _onPage }: Props) {
           Analizy i rekomendacje
         </h1>
         <p style={{ color: C.text3, fontSize: 14, margin: '4px 0 0' }}>
-          Lejek marketingowy · zmeczenie materialu · frazy · strategie licytowania · targetowanie
+          Lejek marketingowy · zmęczenie materiałów · frazy · strategie licytowania · targetowanie
         </p>
+      </div>
+
+      {/* Context banner */}
+      <div style={{
+        marginBottom: 24, padding: '10px 16px',
+        background: 'rgba(249,115,22,0.06)', border: `1px solid rgba(249,115,22,0.18)`,
+        borderRadius: 10, display: 'flex', alignItems: 'center', gap: 10,
+      }}>
+        <span style={{ fontSize: 15 }}>🎯</span>
+        <span style={{ fontSize: 12, color: C.text2, fontWeight: 500 }}>
+          Analizy uwzględniają dane ICP z dokumentu <strong>„ICP Source of Truth"</strong>.
+          Kampanie z segmentu <strong>Gastronomia (P0)</strong> i <strong>Hospitality/Retail (P1)</strong>
+          powinny mieć priorytet w budżecie i świeżych kreacjach.
+          Segment <strong>Inne / poza ICP</strong> — kandydaci do cięć budżetu lub pauz.
+        </span>
       </div>
 
       {/* ── 1. FUNNEL VISUALIZATION ─────────────────────────────── */}
       <div style={{ ...card, padding: '24px', marginBottom: 20 }}>
-        <SectionHeader icon={BarChart2} iconBg={G.navy} title="Lejek marketingowy i sprzedazowy" sub="Rozmieszczenie kampanii na etapach zakupowych" />
+        <SectionHeader icon={BarChart2} iconBg={G.navy} title="Lejek marketingowy i sprzedażowy" sub="Rozmieszczenie kampanii na etapach zakupowych" />
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
           {funnelCampaigns.map((stage, stageIdx) => {
@@ -250,7 +265,7 @@ export default function Insights({ onPage: _onPage }: Props) {
 
         {/* 2. AD FATIGUE */}
         <div style={{ ...card, padding: '24px' }}>
-          <SectionHeader icon={AlertTriangle} iconBg={G.amber} title="Zmeczenie materialu" sub="CTR trend tygodniowy · wskaznik 0–100" />
+          <SectionHeader icon={AlertTriangle} iconBg={G.amber} title="Zmęczenie materiałów" sub="CTR trend tygodniowy · wskaźnik 0–100" />
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {fatigueSorted.map(c => {
@@ -278,7 +293,7 @@ export default function Insights({ onPage: _onPage }: Props) {
                     {/* Fatigue bar */}
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-                        <span style={{ fontSize: 10, color: C.text3, fontWeight: 600 }}>Zmeczenie</span>
+                        <span style={{ fontSize: 10, color: C.text3, fontWeight: 600 }}>Zmęczenie</span>
                         <span style={{ fontSize: 11, fontWeight: 800, color: fatColor }}>{c.fatigueScore}/100</span>
                       </div>
                       <div style={{ width: '100%', height: 5, borderRadius: 99, background: 'rgba(255,255,255,0.6)', overflow: 'hidden' }}>
@@ -304,8 +319,8 @@ export default function Insights({ onPage: _onPage }: Props) {
                   {c.fatigueScore >= 60 && (
                     <div style={{ marginTop: 8, paddingTop: 8, borderTop: `1px solid ${fatBdr}`, fontSize: 11, color: C.text2 }}>
                       Rekomendacja: {c.fatigueScore >= 70
-                        ? 'Natychmiast odswiezc kreacje lub wstrzymac kampanie i przygotowac nowe materialy.'
-                        : 'Warto przetestowac nowe teksty reklam lub banery. Rozwazen A/B test.'}
+                        ? 'Natychmiast odświeżyć kreacje lub wstrzymać kampanię i przygotować nowe materiały.'
+                        : 'Warto przetestować nowe teksty reklam lub banery. Rozważ A/B test.'}
                     </div>
                   )}
                 </div>
@@ -331,14 +346,14 @@ export default function Insights({ onPage: _onPage }: Props) {
               <AlertTriangle size={14} color={C.rose} />
               <div>
                 <div style={{ fontSize: 14, fontWeight: 800, color: C.rose }}>{poorKeywords.length}</div>
-                <div style={{ fontSize: 10, color: C.text3, fontWeight: 600 }}>Slabe frazy</div>
+                <div style={{ fontSize: 10, color: C.text3, fontWeight: 600 }}>Słabe frazy</div>
               </div>
             </div>
             <div style={{ ...card, padding: '8px 14px', display: 'flex', alignItems: 'center', gap: 8, borderRadius: 10 }}>
               <Zap size={14} color={C.orange} />
               <div>
                 <div style={{ fontSize: 14, fontWeight: 800, color: C.orange }}>{Math.round(poorKwCost).toLocaleString('pl-PL')} PLN</div>
-                <div style={{ fontSize: 10, color: C.text3, fontWeight: 600 }}>Koszt slabych fraz</div>
+                <div style={{ fontSize: 10, color: C.text3, fontWeight: 600 }}>Koszt słabych fraz</div>
               </div>
             </div>
           </div>
@@ -364,14 +379,14 @@ export default function Insights({ onPage: _onPage }: Props) {
             background: C.roseBg, border: `1px solid ${C.roseBdr}`,
             borderRadius: 10, fontSize: 12, color: C.rose,
           }}>
-            <strong>Wykryte marnotrawstwo:</strong> {Math.round((poorKwCost / totalKwCost) * 100)}% budzetu ({Math.round(poorKwCost).toLocaleString('pl-PL')} PLN) idzie na frazy z ROAS ponizej 2.0x. Warto wstrzymac lub zawezic dopasowanie.
+            <strong>Wykryte marnotrawstwo:</strong> {Math.round((poorKwCost / totalKwCost) * 100)}% budżetu ({Math.round(poorKwCost).toLocaleString('pl-PL')} PLN) idzie na frazy z ROAS poniżej 2.0x. Warto wstrzymać lub zawęzić dopasowanie.
           </div>
         </div>
       </div>
 
       {/* ── 4. BIDDING RECOMMENDATIONS ──────────────────────────── */}
       <div style={{ ...card, padding: '24px', marginBottom: 20 }}>
-        <SectionHeader icon={Target} iconBg={G.navy} title="Strategie licytowania" sub="Rekomendacje zmiany bid strategy per kampania" />
+        <SectionHeader icon={Target} iconBg={G.navy} title="Strategie licytowania" sub="Rekomendacje zmiany strategii licytowania per kampania" />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
           {biddingRecos.map((r, i) => {
             const pc = priorityColors[r.priority];
@@ -412,7 +427,7 @@ export default function Insights({ onPage: _onPage }: Props) {
 
       {/* ── 5. AUDIENCE RECOMMENDATIONS ─────────────────────────── */}
       <div style={{ ...card, padding: '24px' }}>
-        <SectionHeader icon={Users} iconBg={G.teal} title="Targetowanie i grupy docelowe" sub="Rekomendacje dot. segmentacji i wykluczenia odbiorow" />
+        <SectionHeader icon={Users} iconBg={G.teal} title="Targetowanie i grupy docelowe" sub="Rekomendacje dot. segmentacji i wykluczenia odbiorców" />
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {audienceRecos.map((r, i) => (
             <div key={i} style={{

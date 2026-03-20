@@ -9,9 +9,44 @@ export interface Account {
 }
 
 export type CampaignStatus = 'ENABLED' | 'PAUSED' | 'REMOVED';
-export type CampaignType = 'SEARCH' | 'DISPLAY' | 'SHOPPING' | 'VIDEO' | 'PERFORMANCE_MAX';
-export type FunnelStage = 'awareness' | 'consideration' | 'conversion';
+export type CampaignType   = 'SEARCH' | 'DISPLAY' | 'SHOPPING' | 'VIDEO' | 'PERFORMANCE_MAX';
+export type FunnelStage    = 'awareness' | 'consideration' | 'conversion';
 
+// ─── ICP types (from ICP Source of Truth & Growth ICP docs) ─────────────────
+export type IcpSegment =
+  | 'Gastronomia'   // P0 ~39% przychodów
+  | 'Hospitality'   // P1 ~14%
+  | 'Retail'        // P1 ~10%
+  | 'Zdrowie'       // P2 ~8%
+  | 'Wellness'      // P2 ~8%
+  | 'Logistyka'     // P2 ~8%
+  | 'Produkcja'     // P2 ~7%
+  | 'Inne';         // poza ICP ~6%
+
+export type IcpStatus = 'high' | 'core' | 'outside'; // 100+ / 70-99 / <70
+
+export interface IcpSegmentData {
+  segment:      IcpSegment;
+  label:        string;
+  emoji:        string;
+  priority:     'P0' | 'P1' | 'P2' | 'out';
+  revenueShare: number;   // % udziału w przychodach
+  spend:        number;   // PLN wydane na ten segment
+  impressions:  number;
+  clicks:       number;
+  conversions:  number;
+  icpFitAvg:    number;   // średni Fit Score leadów z tego segmentu
+  color:        string;
+}
+
+// ─── Dashboard widget customization ─────────────────────────────────────────
+export interface DashboardWidget {
+  id:      string;
+  title:   string;
+  visible: boolean;
+}
+
+// ─── Campaign ────────────────────────────────────────────────────────────────
 export interface Campaign {
   id: string;
   name: string;
@@ -28,16 +63,21 @@ export interface Campaign {
   conversionValue: number;
   roas: number;
   startDate: string;
-  // New analytics fields
+  // Funnel & fatigue analytics
   funnelStage: FunnelStage;
-  fatigueScore: number;      // 0–100: ad creative fatigue
-  ctrTrend: number;          // % change week-over-week
+  fatigueScore: number;           // 0–100: zmęczenie kreacji
+  ctrTrend: number;               // % zmiana tydzień do tygodnia
   bidStrategy: string;
   targetAudience: string;
-  weeklyImpressionsData: number[];  // last 7 weeks for sparkline
+  weeklyImpressionsData: number[];
   weeklyCtrData: number[];
+  // ICP
+  icpSegment: IcpSegment;
+  icpFitScore: number;            // 0–140 (Fit 0-100 + Pain 0-40)
+  icpStatus: IcpStatus;
 }
 
+// ─── Keyword ─────────────────────────────────────────────────────────────────
 export interface KeywordData {
   phrase: string;
   impressions: number;
@@ -51,6 +91,7 @@ export interface KeywordData {
   quality: 'top' | 'good' | 'average' | 'poor';
 }
 
+// ─── Daily metric ────────────────────────────────────────────────────────────
 export interface DailyMetric {
   date: string;
   impressions: number;
@@ -59,8 +100,10 @@ export interface DailyMetric {
   conversions: number;
   conversionValue: number;
   roas: number;
+  icpRatio: number;   // 0–1: jaki % kliknięć pochodzi z segmentów ICP
 }
 
+// ─── Chat ────────────────────────────────────────────────────────────────────
 export interface ChatMessage {
   id: string;
   role: 'user' | 'assistant';
@@ -85,6 +128,7 @@ export interface ChangePreview {
   confirmed?: boolean;
 }
 
+// ─── Account summary ─────────────────────────────────────────────────────────
 export interface AccountSummary {
   totalCost: number;
   totalImpressions: number;

@@ -1,10 +1,11 @@
 import { C, G, S, card } from '../lib/theme';
-import { MOCK_DAILY, MOCK_CAMPAIGNS, MOCK_KEYWORDS } from '../lib/mockData';
+import { MOCK_DAILY, MOCK_CAMPAIGNS, MOCK_KEYWORDS, MOCK_ICP_SEGMENTS } from '../lib/mockData';
 import {
   AreaChart, Area, BarChart, Bar, LineChart, Line,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
   FunnelChart, Funnel, LabelList,
 } from 'recharts';
+import React from 'react';
 import {
   TrendingUp, TrendingDown, DollarSign, MousePointerClick,
   Repeat2, Target, BarChart2, Search,
@@ -121,6 +122,8 @@ export default function Reports() {
   // Cost + Conversion value area chart
   const costData = MOCK_DAILY.map(d => ({
     date: d.date.slice(5),
+    'Wydatki ICP': Math.round(d.cost * d.icpRatio),
+    'Wydatki poza ICP': Math.round(d.cost * (1 - d.icpRatio)),
     'Wydatki': Math.round(d.cost),
     'Przychód': Math.round(d.conversionValue),
   }));
@@ -209,6 +212,20 @@ export default function Reports() {
             Analiza wydajności kampanii · ostatnie 30 dni
           </p>
         </div>
+      </div>
+
+      {/* Context banner */}
+      <div style={{
+        marginBottom: 24, padding: '10px 16px',
+        background: C.navyBg, border: `1px solid rgba(11,74,111,0.15)`, borderRadius: 10,
+        display: 'flex', alignItems: 'center', gap: 10,
+      }}>
+        <Target size={14} color={C.navyLight} />
+        <span style={{ fontSize: 12, color: C.navy, fontWeight: 500, fontFamily: 'Inter, sans-serif' }}>
+          Nowa sekcja: <strong>„Podział ruchu i budżetu wg segmentu ICP"</strong> — wizualizacja
+          wydatków i ROAS dla każdego segmentu z dokumentu <em>ICP Source of Truth</em>.
+          Cel Q1 2026: ≥ 70% budżetu na Gastronomia (P0) + Hospitality (P1) + Retail (P1).
+        </span>
       </div>
 
       {/* ── KPI cards ───────────────────────────────────────────────── */}
@@ -354,6 +371,87 @@ export default function Reports() {
             ))}
           </div>
         </div>
+      </div>
+
+      {/* ── ICP segment analysis ────────────────────────────────────────── */}
+      <SectionHeader
+        icon={<Target size={22} color="#fff" />}
+        gradient={G.orange}
+        title="Podział ruchu i budżetu wg segmentu ICP"
+        sub="Dane z dokumentu ICP Source of Truth · P0: Gastronomia · P1: Hospitality, Retail · cel: ≥ 70% na ICP"
+      />
+
+      {/* ICP vs non-ICP stacked area */}
+      <ChartCard title="Kliknięcia ICP vs poza ICP — trend 30 dni"
+        sub="Pomarańczowy = ruch z segmentów ICP (Gastro P0 + Hospitality P1 + Retail P1 + inne P2) · szary = poza ICP">
+        <ResponsiveContainer width="100%" height={180}>
+          <AreaChart data={costData}>
+            <defs>
+              <linearGradient id="icpGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%"  stopColor={PALETTE[0]} stopOpacity={0.30} />
+                <stop offset="95%" stopColor={PALETTE[0]} stopOpacity={0} />
+              </linearGradient>
+              <linearGradient id="nonIcpGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%"  stopColor="#CBD5E1" stopOpacity={0.50} />
+                <stop offset="95%" stopColor="#CBD5E1" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid stroke={C.border} strokeDasharray="3 3" />
+            <XAxis dataKey="date" tick={{ fill: C.text3, fontSize: 10, fontFamily: 'Inter' }} interval={6} />
+            <YAxis tick={{ fill: C.text3, fontSize: 10, fontFamily: 'Inter' }} width={46} />
+            <Tooltip {...tooltipStyle} formatter={(v: number, n: string) => [`${v.toLocaleString('pl-PL')} PLN`, n]} />
+            <Legend wrapperStyle={{ fontSize: 11, fontFamily: 'Inter' }} />
+            <Area type="monotone" dataKey="Wydatki ICP"     stroke={PALETTE[0]} fill="url(#icpGrad)"    strokeWidth={2.5} stackId="1" dot={false} />
+            <Area type="monotone" dataKey="Wydatki poza ICP" stroke="#CBD5E1"    fill="url(#nonIcpGrad)" strokeWidth={1.5} stackId="1" dot={false} />
+          </AreaChart>
+        </ResponsiveContainer>
+      </ChartCard>
+
+      {/* ICP segment bar chart */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 28 }}>
+        <ChartCard title="Wydatki per segment ICP" sub="PLN wydane na każdy segment wg ICP Source of Truth">
+          <ResponsiveContainer width="100%" height={220}>
+            <BarChart data={MOCK_ICP_SEGMENTS.filter(s => s.spend > 0)} layout="vertical" barSize={14}>
+              <CartesianGrid stroke={C.border} strokeDasharray="3 3" horizontal={false} />
+              <XAxis type="number" tick={{ fill: C.text3, fontSize: 10, fontFamily: 'Inter' }}
+                tickFormatter={v => `${(v/1000).toFixed(0)}k`} />
+              <YAxis type="category" dataKey="label"
+                tickFormatter={(v: string) => v.length > 22 ? v.slice(0, 22) + '…' : v}
+                tick={{ fill: C.text2, fontSize: 10, fontFamily: 'Inter' }} width={160} />
+              <Tooltip {...tooltipStyle} formatter={(v: number) => [`${v.toLocaleString('pl-PL')} PLN`, 'Wydatki']} />
+              <Bar dataKey="spend" radius={[0, 6, 6, 0]}>
+                {MOCK_ICP_SEGMENTS.filter(s => s.spend > 0).map((seg, i) => (
+                  <rect key={i} fill={seg.color} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </ChartCard>
+
+        <ChartCard title="ROAS per segment ICP" sub="Szacowany ROAS — konwersje × 200 PLN / wydatki">
+          <ResponsiveContainer width="100%" height={220}>
+            <BarChart
+              data={MOCK_ICP_SEGMENTS.filter(s => s.spend > 0 && s.conversions > 0).map(s => ({
+                ...s,
+                roas: Math.round(((s.conversions * 200) / s.spend) * 10) / 10,
+              }))}
+              layout="vertical" barSize={14}
+            >
+              <CartesianGrid stroke={C.border} strokeDasharray="3 3" horizontal={false} />
+              <XAxis type="number" tick={{ fill: C.text3, fontSize: 10, fontFamily: 'Inter' }}
+                tickFormatter={v => `${v}x`} domain={[0, 8]} />
+              <YAxis type="category" dataKey="label"
+                tickFormatter={(v: string) => v.length > 22 ? v.slice(0, 22) + '…' : v}
+                tick={{ fill: C.text2, fontSize: 10, fontFamily: 'Inter' }} width={160} />
+              <Tooltip {...tooltipStyle} formatter={(v: number) => [`${v.toFixed(1)}x`, 'ROAS']} />
+              <Bar dataKey="roas" radius={[0, 6, 6, 0]}>
+                {MOCK_ICP_SEGMENTS.filter(s => s.spend > 0 && s.conversions > 0).map((seg, i) => (
+                  <rect key={i} fill={seg.color} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </ChartCard>
       </div>
 
       {/* ── Keyword analysis section ─────────────────────────────────── */}
