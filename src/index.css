@@ -261,6 +261,18 @@ a { color: inherit; text-decoration: none; }
 /* ── Sparkline container ── */
 .sparkline { display: inline-block; vertical-align: middle; }
 
+/* ── Login split-screen layout ── */
+.login-left {
+  flex: 0 0 52%;
+}
+.login-right {
+  flex: 1;
+}
+@media (max-width: 860px) {
+  .login-left  { display: none !important; }
+  .login-right { flex: 1; min-height: 100vh; }
+}
+
 /* ── Thin divider ── */
 .divider {
   height: 1px;

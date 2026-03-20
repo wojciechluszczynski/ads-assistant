@@ -18,20 +18,14 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
   const [password, setPassword] = useState('');
   const [show,     setShow]     = useState(false);
   const [error,    setError]    = useState('');
-  const [loading,  setLoading]  = useState(false);
 
-  async function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!password || password.length < 4) {
       setError('Wpisz hasło (min. 4 znaki)');
       return;
     }
-    setLoading(true);
-    setError('');
-    // Short artificial delay to feel responsive
-    await new Promise(r => setTimeout(r, 350));
     onLogin();
-    setLoading(false);
   }
 
   return (
@@ -41,8 +35,7 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
       fontFamily: 'Inter, -apple-system, sans-serif',
     }}>
       {/* ── Left decorative panel ─────────────────────────────────────── */}
-      <div style={{
-        flex: '0 0 55%',
+      <div className="login-left" style={{
         background: 'linear-gradient(145deg, #0F172A 0%, #1E293B 50%, #0F172A 100%)',
         display: 'flex',
         flexDirection: 'column',
@@ -152,8 +145,7 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
       </div>
 
       {/* ── Right form panel ──────────────────────────────────────────── */}
-      <div style={{
-        flex: 1,
+      <div className="login-right" style={{
         background: '#F8FAFC',
         display: 'flex',
         alignItems: 'center',
@@ -240,7 +232,7 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
 
               <button
                 type="submit"
-                disabled={loading || !password}
+                disabled={!password}
                 className={password ? 'btn-cta' : ''}
                 style={{
                   width: '100%', padding: '13px',
@@ -255,10 +247,7 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
                   fontFamily: 'Inter, sans-serif',
                 }}
               >
-                {loading
-                  ? <span className="spin" style={{ width: 17, height: 17, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%', display: 'inline-block' }} />
-                  : <> Zaloguj się <ArrowRight size={14} /> </>
-                }
+                Zaloguj się <ArrowRight size={14} />
               </button>
             </form>
           </div>
