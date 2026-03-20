@@ -23,6 +23,7 @@ export default function Login({ onLogin }: { onLogin: () => void }) {
 
   return (
     <div style={{
+      flex: 1,
       minHeight: '100vh',
       display: 'flex',
       alignItems: 'center',
