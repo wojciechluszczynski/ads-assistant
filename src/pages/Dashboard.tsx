@@ -4,6 +4,7 @@ import {
   Activity, AlertTriangle, ArrowRight, Zap, Target, Lightbulb, Users,
   Settings2, X, GripVertical, CheckCircle, Info,
 } from 'lucide-react';
+import DateRangePicker, { type DateRange } from '../components/DateRangePicker';
 import {
   AreaChart, Area, ResponsiveContainer, Tooltip, XAxis,
   PieChart, Pie, Cell,
@@ -258,6 +259,11 @@ export default function Dashboard({ onPage }: Props) {
   const [widgets, setWidgets] = useState<DashboardWidget[]>(DEFAULT_WIDGETS);
   const [showSettings, setShowSettings] = useState(false);
   const settingsRef = useRef<HTMLDivElement>(null);
+  const [dateRange, setDateRange] = useState<DateRange>({
+    from: new Date(Date.now() - 29 * 86400000),
+    to: new Date(),
+    label: 'Ostatnie 30 dni',
+  });
 
   const isVisible = (id: string) => widgets.find(w => w.id === id)?.visible ?? true;
   const toggleWidget = (id: string) =>
@@ -322,7 +328,9 @@ export default function Dashboard({ onPage }: Props) {
             <span style={{ color: C.navy, fontWeight: 600 }}>{icpSpendPct}% budżetu na ICP</span>
           </p>
         </div>
-        <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
+        <div style={{ display: 'flex', gap: 8, flexShrink: 0, alignItems: 'center' }}>
+          {/* Date range picker */}
+          <DateRangePicker value={dateRange} onChange={setDateRange} />
           {/* Customize */}
           <div ref={settingsRef} style={{ position: 'relative' }}>
             <button

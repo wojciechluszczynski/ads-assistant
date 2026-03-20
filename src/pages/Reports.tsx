@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { C, G, S, card } from '../lib/theme';
 import { MOCK_DAILY, MOCK_CAMPAIGNS, MOCK_KEYWORDS, MOCK_ICP_SEGMENTS } from '../lib/mockData';
 import {
@@ -10,6 +11,7 @@ import {
   TrendingUp, TrendingDown, DollarSign, MousePointerClick,
   Repeat2, Target, BarChart2, Search,
 } from 'lucide-react';
+import DateRangePicker, { type DateRange } from '../components/DateRangePicker';
 
 // Kadromierz palette — orange primary, navy secondary, amber, sky
 const PALETTE = ['#F97316', '#0B4A6F', '#F59E0B', '#0EA5E9', '#EF4444'];
@@ -119,6 +121,12 @@ function StatCard({
 }
 
 export default function Reports() {
+  const [dateRange, setDateRange] = useState<DateRange>({
+    from: new Date(Date.now() - 29 * 86400000),
+    to: new Date(),
+    label: 'Ostatnie 30 dni',
+  });
+
   // Cost + Conversion value area chart
   const costData = MOCK_DAILY.map(d => ({
     date: d.date.slice(5),
@@ -196,22 +204,25 @@ export default function Reports() {
     <div className="page-container fade-up">
 
       {/* ── Page header ─────────────────────────────────────────────── */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 28 }}>
-        <div style={{
-          width: 52, height: 52, borderRadius: 14,
-          background: G.orange, display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: S.orange,
-        }}>
-          <BarChart2 size={24} color="#fff" />
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, marginBottom: 28, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div style={{
+            width: 52, height: 52, borderRadius: 14,
+            background: G.orange, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: S.orange, flexShrink: 0,
+          }}>
+            <BarChart2 size={24} color="#fff" />
+          </div>
+          <div>
+            <h1 style={{ fontSize: 28, fontWeight: 800, color: C.text, margin: 0, letterSpacing: -0.7 }}>
+              Raporty
+            </h1>
+            <p style={{ color: C.text3, fontSize: 13, margin: '3px 0 0', fontFamily: 'Inter, sans-serif' }}>
+              Analiza wydajności kampanii · {dateRange.label.toLowerCase()}
+            </p>
+          </div>
         </div>
-        <div>
-          <h1 style={{ fontSize: 28, fontWeight: 800, color: C.text, margin: 0, letterSpacing: -0.7 }}>
-            Raporty
-          </h1>
-          <p style={{ color: C.text3, fontSize: 13, margin: '3px 0 0', fontFamily: 'Inter, sans-serif' }}>
-            Analiza wydajności kampanii · ostatnie 30 dni
-          </p>
-        </div>
+        <DateRangePicker value={dateRange} onChange={setDateRange} />
       </div>
 
       {/* Context banner */}
