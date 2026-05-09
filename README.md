@@ -2,6 +2,8 @@
 
 Dashboard do zarządzania kampaniami Google Ads z wbudowanym systemem oceny jakości ruchu (ICP scoring). Zaprojektowany dla performance marketerów prowadzących konta dla wielu klientów jednocześnie.
 
+**Live:** [ads-assistant-three.vercel.app](https://ads-assistant-three.vercel.app)
+
 ---
 
 ## Co to jest
